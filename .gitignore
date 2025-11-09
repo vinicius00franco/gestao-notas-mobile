@@ -5,3 +5,6 @@ dist
 .DS_Store
 *.keystore
 *.jks
+
+.env*
+android
