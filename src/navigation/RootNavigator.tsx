@@ -49,9 +49,15 @@ function MainTabs() {
       initialRouteName="Dashboard"
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.placeholder,
-        tabBarStyle: { backgroundColor: colors.surface },
+        tabBarActiveTintColor: colors.onPrimary, // Branco sobre verde escuro
+        tabBarInactiveTintColor: colors.onPrimary, // Branco sobre verde escuro
+        tabBarStyle: { 
+          backgroundColor: colors.primaryVariant, // Verde escuro
+          borderTopWidth: 0, // Remove borda superior
+          elevation: 0, // Remove sombra no Android
+          shadowOpacity: 0, // Remove sombra no iOS
+          height: 60, // Altura maior para melhor usabilidade
+        },
         tabBarIcon: ({ color, size }) => {
           let iconName: React.ComponentProps<typeof MaterialIcons>['name'] = 'dashboard';
 
@@ -84,7 +90,7 @@ function AppDrawer() {
       drawerContent={(props: DrawerContentComponentProps) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         headerStyle: {
-          backgroundColor: colors.primary,
+          backgroundColor: colors.primaryVariant, // Verde escuro para o cabeçalho
         },
         headerTintColor: colors.onPrimary,
         drawerStyle: {

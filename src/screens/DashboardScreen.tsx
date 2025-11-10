@@ -1,9 +1,13 @@
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboard } from '../hooks/api';
 import { useTheme } from '../theme/ThemeProvider';
 import { TopFornecedor, DashboardData, RecentNF, AlertItem } from '../types';
 import Card from '../components/Card';
+import HorizontalScrollCards from '../components/HorizontalScrollCards';
+import AlertCard from '../components/AlertCard';
+import RecentNFCard from '../components/RecentNFCard';
+import FornecedorCard from '../components/FornecedorCard';
 // Conditionally import chart components only for native platforms
 let LineChartCard: any = null;
 let BarChartCard: any = null;
@@ -32,22 +36,18 @@ export default function DashboardScreen() {
     errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     errorText: { ...theme.typography.h2, color: theme.colors.error },
     header: { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8 },
-    title: { ...theme.typography.h2 },
+    title: { ...theme.typography.h2, color: theme.colors.text }, // Preto para título principal
     scrollContainer: { flex: 1 },
     section: { marginVertical: 8 },
-    sectionTitle: { ...theme.typography.h2, marginHorizontal: 16, marginBottom: 8 },
+    sectionTitle: { ...theme.typography.h2, marginHorizontal: 16, marginBottom: 8, color: theme.colors.text }, // Preto para títulos de seção
     kpisContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16 },
     kpiCard: { flex: 1, minWidth: '45%', margin: 4, padding: 16, backgroundColor: theme.colors.surface, borderRadius: 8, borderWidth: 1, borderColor: theme.colors.border },
-    kpiValue: { ...theme.typography.h1, color: theme.colors.primary },
-    kpiLabel: { ...theme.typography.body, color: theme.colors.onSurface },
+    kpiValue: { ...theme.typography.h1, color: theme.colors.text }, // Preto para melhor contraste
+    kpiLabel: { ...theme.typography.body, color: theme.colors.text }, // Preto para melhor contraste
     filtersContainer: { flexDirection: 'row', paddingHorizontal: 16, marginBottom: 8 },
     filterButton: { padding: 8, marginRight: 8, backgroundColor: theme.colors.surface, borderRadius: 4, borderWidth: 1, borderColor: theme.colors.border },
-    filterText: { ...theme.typography.body, color: theme.colors.onSurface },
-    alertItem: { padding: 16, marginVertical: 4, marginHorizontal: 16, backgroundColor: theme.colors.surface, borderRadius: 8, borderWidth: 1, borderColor: theme.colors.border },
-    alertTitle: { ...theme.typography.h2, color: theme.colors.error },
-    alertDesc: { ...theme.typography.body, color: theme.colors.onSurface },
-    nfItem: { padding: 16, marginVertical: 4, marginHorizontal: 16, backgroundColor: theme.colors.surface, borderRadius: 8, borderWidth: 1, borderColor: theme.colors.border },
-    nfText: { ...theme.typography.body, color: theme.colors.onSurface },
+    filterText: { ...theme.typography.body, color: theme.colors.text }, // Preto para texto dos filtros
+    nfText: { ...theme.typography.body, color: theme.colors.text }, // Preto para texto informativo
   });
 
   if (isLoading) {
@@ -73,25 +73,20 @@ export default function DashboardScreen() {
     </View>
   );
 
-  const renderAlert = ({ item }: { item: AlertItem }) => (
-    <View style={styles.alertItem}>
-      <Text style={styles.alertTitle}>{item.tipo} ({item.quantidade})</Text>
-      <Text style={styles.alertDesc}>{item.descricao}</Text>
-    </View>
-  );
-
-  const renderRecentNF = ({ item }: { item: RecentNF }) => (
-    <View style={styles.nfItem}>
-      <Text style={styles.nfText}>{item.nome_razao_social}</Text>
-      <Text style={styles.nfText}>{item.numero_data}</Text>
-      <Text style={styles.nfText}>R$ {item.valor.toFixed(2)}</Text>
-      <Text style={styles.nfText}>{item.status}</Text>
-    </View>
-  );
-
   const tendenciaData = data.charts.tendencia_valor_imposto.map(d => ({ x: d.mes, y: d.valor_bruto }));
   const impostosData = data.charts.tendencia_valor_imposto.map(d => ({ x: d.mes, y: d.valor_impostos }));
-  const volumeData = data.charts.volume_tipo_nf.filter(d => d.mes === 'Dez').map(d => ({ x: d.tipo, y: d.quantidade })); // Example for current month
+  
+  // Use all data for volume chart instead of filtering
+  const volumeByType = data.charts.volume_tipo_nf.reduce((acc, d) => {
+    const existing = acc.find(item => item.x === d.tipo);
+    if (existing) {
+      existing.y += d.quantidade;
+    } else {
+      acc.push({ x: d.tipo, y: d.quantidade });
+    }
+    return acc;
+  }, [] as { x: string; y: number }[]);
+  const volumeData = volumeByType;
 
   // Aggregate impostos by tipo
   const impostosAgg = data.charts.distribuicao_impostos.reduce((acc, d) => {
@@ -146,43 +141,25 @@ export default function DashboardScreen() {
         )}
 
         {/* Alerts */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Alertas Fiscais</Text>
-          <FlatList
-            data={data.alerts}
-            renderItem={renderAlert}
-            keyExtractor={(item) => item.tipo}
-            scrollEnabled={false}
-          />
-        </View>
+        <HorizontalScrollCards title="Alertas Fiscais">
+          {data.alerts.map((alert, index) => (
+            <AlertCard key={`${alert.tipo}-${index}`} alert={alert} />
+          ))}
+        </HorizontalScrollCards>
 
         {/* Recent NFs */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notas Fiscais Recentes</Text>
-          <FlatList
-            data={data.recent_nfs}
-            renderItem={renderRecentNF}
-            keyExtractor={(item) => item.numero_data}
-            scrollEnabled={false}
-          />
-        </View>
+        <HorizontalScrollCards title="Notas Fiscais Recentes">
+          {data.recent_nfs.map((nota, index) => (
+            <RecentNFCard key={`${nota.numero_data}-${index}`} nota={nota} />
+          ))}
+        </HorizontalScrollCards>
 
         {/* Top Fornecedores */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Top 5 Fornecedores Pendentes</Text>
-          <FlatList
-            data={data.top_5_fornecedores_pendentes}
-            renderItem={({ item }: { item: TopFornecedor }) => (
-              <View style={styles.nfItem}>
-                <Text style={styles.nfText}>{item.nome}</Text>
-                <Text style={styles.nfText}>CNPJ: {item.cnpj}</Text>
-                <Text style={styles.nfText}>Total a Pagar: R$ {item.total_a_pagar.toFixed(2)}</Text>
-              </View>
-            )}
-            keyExtractor={(item) => item.cnpj}
-            scrollEnabled={false}
-          />
-        </View>
+        <HorizontalScrollCards title="Top 5 Fornecedores Pendentes">
+          {data.top_5_fornecedores_pendentes.map((fornecedor, index) => (
+            <FornecedorCard key={`${fornecedor.cnpj}-${index}`} fornecedor={fornecedor} />
+          ))}
+        </HorizontalScrollCards>
       </ScrollView>
     </SafeAreaView>
   );
