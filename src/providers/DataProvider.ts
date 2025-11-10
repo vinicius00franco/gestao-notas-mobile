@@ -8,7 +8,7 @@ import * as realCalendarService from '../api/services/calendarService';
 
 import * as mockServices from './MockDataProvider';
 
-const appMode = Constants.expoConfig?.extra?.appMode || 'real';
+const appMode = Constants.expoConfig?.extra?.appMode || 'mock'; // Forçado para mock temporariamente
 if (__DEV__) {
 	console.log('[DataProvider] appMode =', appMode);
 }

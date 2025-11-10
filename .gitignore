@@ -8,3 +8,4 @@ dist
 
 .env*
 android
+.gradle-user-home

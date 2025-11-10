@@ -2,38 +2,93 @@
   "aPagar": [
     {
       "uuid": "abc-123-def-456",
-      "descricao": "Aluguel Mock",
-      "valor": 1500.00,
-      "data_vencimento": "2023-11-05",
+      "descricao": "Compra de tomates - Hortifruti São João",
+      "valor": 2850.75,
+      "data_vencimento": "2025-11-15",
       "data_pagamento": null,
-      "clf_tipo": { "id": 1, "nome": "Moradia" },
+      "clf_tipo": { "id": 1, "nome": "Compras" },
       "clf_status": { "id": 1, "nome": "Pendente" },
-      "dt_criacao": "2023-10-27T10:00:00Z",
-      "dt_alteracao": "2023-10-27T10:00:00Z"
+      "dt_criacao": "2025-11-01T10:00:00Z",
+      "dt_alteracao": "2025-11-01T10:00:00Z"
     },
     {
       "uuid": "ghi-789-jkl-012",
-      "descricao": "Internet Mock",
-      "valor": 99.90,
-      "data_vencimento": "2023-11-10",
+      "descricao": "Embalagens plásticas - Embalagens Silva",
+      "valor": 890.50,
+      "data_vencimento": "2025-11-20",
       "data_pagamento": null,
-      "clf_tipo": { "id": 2, "nome": "Serviços" },
+      "clf_tipo": { "id": 2, "nome": "Materiais" },
       "clf_status": { "id": 1, "nome": "Pendente" },
-      "dt_criacao": "2023-10-27T10:00:00Z",
-      "dt_alteracao": "2023-10-27T10:00:00Z"
+      "dt_criacao": "2025-11-05T10:00:00Z",
+      "dt_alteracao": "2025-11-05T10:00:00Z"
+    },
+    {
+      "uuid": "mno-345-pqr-678",
+      "descricao": "Transporte semanal - Transportadora Verde",
+      "valor": 650.00,
+      "data_vencimento": "2025-11-10",
+      "data_pagamento": null,
+      "clf_tipo": { "id": 3, "nome": "Transporte" },
+      "clf_status": { "id": 1, "nome": "Pendente" },
+      "dt_criacao": "2025-11-03T10:00:00Z",
+      "dt_alteracao": "2025-11-03T10:00:00Z"
+    },
+    {
+      "uuid": "stu-901-vwx-234",
+      "descricao": "Aluguel do ponto comercial",
+      "valor": 1200.00,
+      "data_vencimento": "2025-11-30",
+      "data_pagamento": null,
+      "clf_tipo": { "id": 4, "nome": "Aluguel" },
+      "clf_status": { "id": 1, "nome": "Pendente" },
+      "dt_criacao": "2025-11-01T10:00:00Z",
+      "dt_alteracao": "2025-11-01T10:00:00Z"
+    },
+    {
+      "uuid": "yza-567-bcd-890",
+      "descricao": "Energia elétrica - CEMIG",
+      "valor": 180.25,
+      "data_vencimento": "2025-11-12",
+      "data_pagamento": null,
+      "clf_tipo": { "id": 5, "nome": "Utilidades" },
+      "clf_status": { "id": 1, "nome": "Pendente" },
+      "dt_criacao": "2025-11-01T10:00:00Z",
+      "dt_alteracao": "2025-11-01T10:00:00Z"
     }
   ],
   "aReceber": [
     {
-      "uuid": "mno-345-pqr-678",
-      "descricao": "Salário Mock",
-      "valor": 5000.00,
-      "data_vencimento": "2023-11-01",
-      "data_pagamento": "2023-11-01",
-      "clf_tipo": { "id": 3, "nome": "Salário" },
+      "uuid": "efg-123-hij-456",
+      "descricao": "Venda para Restaurante Sabor Caseiro",
+      "valor": 950.00,
+      "data_vencimento": "2025-11-08",
+      "data_pagamento": "2025-11-08",
+      "clf_tipo": { "id": 6, "nome": "Vendas" },
       "clf_status": { "id": 2, "nome": "Recebido" },
-      "dt_criacao": "2023-10-27T10:00:00Z",
-      "dt_alteracao": "2023-10-27T10:00:00Z"
+      "dt_criacao": "2025-11-01T10:00:00Z",
+      "dt_alteracao": "2025-11-08T14:30:00Z"
+    },
+    {
+      "uuid": "klm-789-nop-012",
+      "descricao": "Venda para Mercado Central",
+      "valor": 1240.50,
+      "data_vencimento": "2025-11-12",
+      "data_pagamento": null,
+      "clf_tipo": { "id": 6, "nome": "Vendas" },
+      "clf_status": { "id": 1, "nome": "Pendente" },
+      "dt_criacao": "2025-11-05T10:00:00Z",
+      "dt_alteracao": "2025-11-05T10:00:00Z"
+    },
+    {
+      "uuid": "qrs-345-tuv-678",
+      "descricao": "Venda para Feira Livre - Cliente João",
+      "valor": 320.75,
+      "data_vencimento": "2025-11-15",
+      "data_pagamento": null,
+      "clf_tipo": { "id": 6, "nome": "Vendas" },
+      "clf_status": { "id": 1, "nome": "Pendente" },
+      "dt_criacao": "2025-11-10T10:00:00Z",
+      "dt_alteracao": "2025-11-10T10:00:00Z"
     }
   ]
 }
