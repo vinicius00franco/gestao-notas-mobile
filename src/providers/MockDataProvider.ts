@@ -1,4 +1,4 @@
-import { JobStatus, PaginatedResponse, TopFornecedor, Lancamento } from '../types';
+import { JobStatus, PaginatedResponse, TopFornecedor, Lancamento, DashboardData } from '../types';
 import { mockJobsDB, createMockJob, extractMockNotaData, STATUS_OPTIONS, createMockDashboardData, mockLancamentosDB } from '../data/mockData';
 import { AxiosResponse } from 'axios';
 import { CalendarDiaResponse, CalendarResumoResponse, CalendarResumoDia, CalendarDiaItem } from '../api/services/calendarService';
@@ -83,10 +83,10 @@ export const MockJobService = {
 };
 
 export const MockDashboardService = {
-  getDashboard: async (): Promise<{ top_5_fornecedores_pendentes: TopFornecedor[]; }> => {
+  getDashboard: async (): Promise<DashboardData> => {
     await mockDelay(500);
     const dashboardData = createMockDashboardData(mockJobsDB);
-    return { top_5_fornecedores_pendentes: dashboardData.top_5_fornecedores_pendentes };
+    return dashboardData;
   },
 };
 

@@ -63,3 +63,50 @@ export type Classificacao = {
   id: string;
   nome: string;
 };
+
+// New dashboard types
+export type DashboardKPIs = {
+  nf_emitidas: number;
+  nf_recebidas: number;
+  valor_total_saida: number;
+  impostos_retidos: number;
+};
+
+export type ChartDataPoint = { x: string | number; y: number };
+
+export type ImpostoData = { tipo: string; valor: number; mes: string };
+
+export type DashboardCharts = {
+  tendencia_valor_imposto: { mes: string; valor_bruto: number; valor_impostos: number }[];
+  distribuicao_impostos: ImpostoData[];
+  volume_tipo_nf: { tipo: string; quantidade: number; mes: string }[];
+};
+
+export type AlertItem = {
+  tipo: string;
+  quantidade: number;
+  descricao: string;
+};
+
+export type DashboardAlerts = AlertItem[];
+
+export type RecentNF = {
+  nome_razao_social: string;
+  numero_data: string;
+  valor: number;
+  status: string;
+};
+
+export type DashboardFilters = {
+  mes?: number;
+  ano?: number;
+  status?: string;
+};
+
+export type DashboardData = {
+  kpis: DashboardKPIs;
+  charts: DashboardCharts;
+  alerts: DashboardAlerts;
+  recent_nfs: RecentNF[];
+  top_5_fornecedores_pendentes: TopFornecedor[]; // Keep existing
+};

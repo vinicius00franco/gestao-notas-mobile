@@ -7,7 +7,7 @@ import {
   NotaFiscalService,
   CalendarService,
 } from '../providers/DataProvider';
-import { JobStatus, PaginatedResponse, UnclassifiedCompany, NotaFiscal, Classificacao } from '../types';
+import { JobStatus, PaginatedResponse, UnclassifiedCompany, NotaFiscal, Classificacao, DashboardData } from '../types';
 import { showMessage } from 'react-native-flash-message';
 import { useNavigation } from '@react-navigation/native';
 import { CalendarResumoResponse, CalendarDiaResponse } from '../api/services/calendarService';
@@ -49,7 +49,7 @@ export function useContasAReceber() {
 }
 
 export function useDashboard() {
-  return useQuery({
+  return useQuery<DashboardData>({
     queryKey: queryKeys.dashboard,
     queryFn: DashboardService.getDashboard,
     staleTime: 60_000,

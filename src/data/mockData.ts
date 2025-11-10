@@ -1,4 +1,4 @@
-import { JobStatus, NotaFiscal, TopFornecedor, Lancamento } from '../types';
+import { JobStatus, NotaFiscal, TopFornecedor, Lancamento, DashboardKPIs, DashboardCharts, DashboardAlerts, RecentNF, ImpostoData } from '../types';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -114,15 +114,98 @@ export const createMockDashboardData = (jobs: JobStatus[]) => {
   };
 
   const topFornecedores: TopFornecedor[] = [
-    { nome: 'Fornecedor A', cnpj: '11.111.111/0001-11', total_a_pagar: 1500.50 },
-    { nome: 'Fornecedor B', cnpj: '22.222.222/0001-22', total_a_pagar: 1250.00 },
-    { nome: 'Fornecedor C', cnpj: '33.333.333/0001-33', total_a_pagar: 980.75 },
+    { nome: 'Hortifruti São João', cnpj: '12.345.678/0001-90', total_a_pagar: 2850.75 },
+    { nome: 'Verduras do Campo', cnpj: '23.456.789/0001-01', total_a_pagar: 1920.40 },
+    { nome: 'CEAGESP - Mercado Livre', cnpj: '34.567.890/0001-12', total_a_pagar: 1580.25 },
+    { nome: 'Embalagens Silva', cnpj: '45.678.901/0001-23', total_a_pagar: 890.50 },
+    { nome: 'Transportadora Verde', cnpj: '56.789.012/0001-34', total_a_pagar: 650.00 },
   ];
+
+  // New NF dashboard data
+  const kpis: DashboardKPIs = {
+    nf_emitidas: 1800,
+    nf_recebidas: 210,
+    valor_total_saida: 150000,
+    impostos_retidos: 11000,
+  };
+
+  const charts: DashboardCharts = generateMockCharts();
+
+  const alerts: DashboardAlerts = [
+    { tipo: 'NF-e Vencida', quantidade: 5, descricao: 'Notas com prazo de pagamento/recebimento vencido.' },
+    { tipo: 'Divergência de XML', quantidade: 3, descricao: 'NFs de entrada que o valor do XML não bate com o valor lançado no sistema.' },
+    { tipo: 'Maior Emitente', quantidade: 1, descricao: 'Empresa X gerou o maior volume de NF no período.' },
+  ];
+
+  const recentNfs: RecentNF[] = generateMockRecentNFs();
 
   return {
     stats,
     top_5_fornecedores_pendentes: topFornecedores,
     economia_gerada: 450.23,
     total_processado: jobs.length,
+    kpis,
+    charts,
+    alerts,
+    recent_nfs: recentNfs,
   };
+};
+
+/**
+ * Gera dados mockados para os gráficos do dashboard.
+ */
+const generateMockCharts = (): DashboardCharts => {
+  const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+  const tendenciaValorImposto = months.map((mes, idx) => ({
+    mes,
+    valor_bruto: 10000 + idx * 2000 + Math.random() * 5000,
+    valor_impostos: 800 + idx * 150 + Math.random() * 500,
+  }));
+
+  const distribuicaoImpostos: ImpostoData[] = [];
+  months.forEach(mes => {
+    ['ICMS', 'PIS', 'COFINS', 'IRRF', 'INSS'].forEach(tipo => {
+      distribuicaoImpostos.push({
+        tipo,
+        valor: Math.random() * 2000 + 500,
+        mes,
+      });
+    });
+  });
+
+  const volumeTipoNf: { tipo: string; quantidade: number; mes: string }[] = [];
+  months.forEach(mes => {
+    volumeTipoNf.push({
+      tipo: 'Saída',
+      quantidade: 120 + Math.floor(Math.random() * 50),
+      mes,
+    });
+    volumeTipoNf.push({
+      tipo: 'Entrada',
+      quantidade: 15 + Math.floor(Math.random() * 10),
+      mes,
+    });
+  });
+
+  return {
+    tendencia_valor_imposto: tendenciaValorImposto,
+    distribuicao_impostos: distribuicaoImpostos,
+    volume_tipo_nf: volumeTipoNf,
+  };
+};
+
+/**
+ * Gera dados mockados para NFs recentes.
+ */
+const generateMockRecentNFs = (): RecentNF[] => {
+  const statuses = ['Pendente', 'Pago', 'Cancelado'];
+  const companies = ['João Silva', 'Empresa ABC', 'Fornecedor XYZ', 'Cliente 123', 'Parceiro DEF'];
+
+  return Array.from({ length: 10 }, (_, i) => ({
+    nome_razao_social: companies[Math.floor(Math.random() * companies.length)],
+    numero_data: `NF ${1000 + i} - ${new Date().toLocaleDateString('pt-BR')}`,
+    valor: Math.random() * 5000 + 500,
+    status: statuses[Math.floor(Math.random() * statuses.length)],
+  }));
 };
