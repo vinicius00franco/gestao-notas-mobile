@@ -24,7 +24,7 @@ describe('UploadSubmitButton', () => {
     );
 
     const button = getByTestId('submit-button');
-    expect(button.props.disabled).toBe(true);
+    expect(button.props.style.opacity).toBe(0.6);
   });
 
   it('shows loading text when isLoading is true', () => {

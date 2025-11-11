@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CompanyListHeader matches snapshot 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#cccccc",
+      "borderBottomWidth": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#333333",
+          "fontSize": 24,
+          "fontWeight": "bold",
+        },
+        {
+          "color": "#333333",
+        },
+      ]
+    }
+  >
+    Empresas Não Classificadas 
+    (5)
+  </Text>
+</View>
+`;

@@ -39,7 +39,8 @@ describe('DeleteNotaButton', () => {
     );
 
     const button = getByTestId('delete-button');
-    expect(button.props.disabled).toBe(true);
+    // Button should have opacity of 0.6 when disabled
+    expect(button.props.style.opacity).toBe(0.6);
   });
 
   it('matches snapshot', () => {

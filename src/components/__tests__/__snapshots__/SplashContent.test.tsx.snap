@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`SplashContent matches snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#ffffff",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <ActivityIndicator
+    color="#99CD85"
+    size="large"
+  />
+  <Text
+    style={
+      [
+        {
+          "color": "#333333",
+          "fontSize": 16,
+        },
+        {
+          "color": "#333333",
+          "marginTop": 16,
+        },
+      ]
+    }
+  >
+    Carregando...
+  </Text>
+</View>
+`;

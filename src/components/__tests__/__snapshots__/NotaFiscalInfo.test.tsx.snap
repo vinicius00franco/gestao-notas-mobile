@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`NotaFiscalInfo matches snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "gap": 12,
+        "padding": 16,
+      },
+      {
+        "backgroundColor": "#99CD85",
+      },
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      UUID:
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+          },
+        ]
+      }
+    >
+      123e4567-e89b-12d3-a456-426614174000
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      Número:
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+          },
+        ]
+      }
+    >
+      NF-001
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      Valor Total:
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+          },
+        ]
+      }
+    >
+      1500.5
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      CNPJ Emitente:
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+          },
+        ]
+      }
+    >
+      12.345.678/0001-99
+    </Text>
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 8,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      Nome Emitente:
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+          },
+        ]
+      }
+    >
+      Empresa XYZ
+    </Text>
+  </View>
+</View>
+`;

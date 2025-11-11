@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`NotaFiscalDetailHeader matches snapshot 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#cccccc",
+      "borderBottomWidth": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#333333",
+          "fontSize": 24,
+          "fontWeight": "bold",
+        },
+        {
+          "color": "#333333",
+        },
+      ]
+    }
+  >
+    Detalhes da Nota Fiscal
+  </Text>
+</View>
+`;

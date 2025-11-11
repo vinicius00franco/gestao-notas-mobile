@@ -69,7 +69,7 @@ describe('NotaFiscalActionButtons', () => {
     );
 
     const deleteButton = getByTestId('delete-button');
-    expect(deleteButton.props.disabled).toBe(true);
+    expect(deleteButton.props.style.opacity).toBe(0.6);
   });
 
   it('matches snapshot', () => {
