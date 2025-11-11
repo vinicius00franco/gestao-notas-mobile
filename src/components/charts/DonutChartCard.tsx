@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Dimensions } from 'react-native';
-import Card from '@/components/Card';
+import { Card } from '@/components/ui';
 import { useTheme } from '@/theme/ThemeProvider';
 
 // Dynamic require for Expo Go compatibility

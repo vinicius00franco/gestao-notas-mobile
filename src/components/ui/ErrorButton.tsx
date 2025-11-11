@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { useTheme } from '../theme/ThemeProvider';
+import { useTheme } from '../../theme/ThemeProvider';
 
 interface ErrorButtonProps {
   onRetry: () => void;

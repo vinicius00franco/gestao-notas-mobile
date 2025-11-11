@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import ErrorScreen from '../screens/ErrorScreen';
+import ErrorScreen from '@/screens/ErrorScreen';
 
 interface Props {
   children: ReactNode;

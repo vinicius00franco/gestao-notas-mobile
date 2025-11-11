@@ -1,6 +1,6 @@
 import React from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack } from 'victory-native';
-import Card from '@/components/Card';
+import { Card } from '@/components/ui';
 import { useTheme } from '@/theme/ThemeProvider';
 
 type Series = { data: { x: string | number; y: number }[]; color: string };

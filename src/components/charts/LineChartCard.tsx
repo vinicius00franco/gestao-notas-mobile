@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Dimensions } from 'react-native';
-import Card from '@/components/Card';
+import { Card } from '@/components/ui';
 import { useTheme } from '@/theme/ThemeProvider';
 
 // Dynamic require to improve compatibility in Expo Go

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
-import Card from '@/components/Card';
+import { Card } from '@/components/ui';
 import { useTheme } from '@/theme/ThemeProvider';
 
 // Dynamically require victory-native to avoid ESM/CJS interop issues in Expo Go

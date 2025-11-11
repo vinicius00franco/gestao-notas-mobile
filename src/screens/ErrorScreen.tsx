@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTheme } from '../theme/ThemeProvider';
-import ErrorMessage from '../components/ErrorMessage';
-import ErrorButton from '../components/ErrorButton';
+import ErrorMessage from '@/components/ui/ErrorMessage';
+import ErrorButton from '@/components/ui/ErrorButton';
 
 interface Props {
   onRetry: () => void;

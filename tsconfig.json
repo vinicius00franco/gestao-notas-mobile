@@ -36,6 +36,9 @@
       ],
       "@/types": [
         "types"
+      ],
+      "@/utils/*": [
+        "utils/*"
       ]
     }
   },

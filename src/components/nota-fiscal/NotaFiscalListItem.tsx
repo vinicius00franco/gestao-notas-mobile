@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { NotaFiscal } from '@/types';
-import { ListItem } from '@/components/ListItem';
-import { formatCurrencyBRL } from '../utils/format';
+import { ListItem } from '@/components/ui';
+import { formatCurrencyBRL } from '@/utils/format';
 import NotaFiscalActionButtons from './NotaFiscalActionButtons';
 
 interface NotaFiscalListItemProps {

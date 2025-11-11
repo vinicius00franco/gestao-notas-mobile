@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import { useTheme } from '@/theme/ThemeProvider';
-import { NotaFiscal } from '../types';
+import { useTheme } from '../../theme/ThemeProvider';
+import { NotaFiscal } from '../../types';
 
 interface KanbanCardProps {
   nota: NotaFiscal;

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { View, ViewProps, StyleSheet } from 'react-native';
-import { useTheme } from '../theme/ThemeProvider';
-import { Theme } from '../theme';
+import { useTheme } from '../../theme/ThemeProvider';
+import { Theme } from '../../theme';
 
 type Spacing = keyof Theme['spacing'];
 
