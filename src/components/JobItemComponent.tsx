@@ -5,16 +5,32 @@ import JobActionButtons from './JobActionButtons';
 
 interface JobItemComponentProps {
   item: JobStatus;
+  onReprocess?: (uuid: string) => void;
+  onDelete?: (uuid: string) => void;
+  isReprocessing?: boolean;
+  isDeleting?: boolean;
 }
 
-export default function JobItemComponent({ item }: JobItemComponentProps) {
+export default function JobItemComponent({
+  item,
+  onReprocess,
+  onDelete,
+  isReprocessing = false,
+  isDeleting = false,
+}: JobItemComponentProps) {
   return (
     <View style={styles.jobItem}>
       <Text style={styles.jobUuid}>UUID: {item.uuid}</Text>
       {item.numero_nota && <Text style={styles.jobNumero}>Número: {item.numero_nota}</Text>}
       <Text>Status: {item.status.codigo}</Text>
       {item.erro && <Text style={{ color: 'red' }}>Erro: {item.erro}</Text>}
-      <JobActionButtons item={item} />
+      <JobActionButtons
+        item={item}
+        onReprocess={onReprocess}
+        onDelete={onDelete}
+        isReprocessing={isReprocessing}
+        isDeleting={isDeleting}
+      />
     </View>
   );
 }

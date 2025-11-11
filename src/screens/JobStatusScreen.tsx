@@ -1,66 +1,12 @@
 import Loading from '@/components/Loading';
 import { JobStatus, PaginatedResponse } from '@/types';
 import { useRef, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useDeleteJob, useListJobsConcluidos, useListJobsErros, useListJobsPendentes, useReprocessJob } from '../hooks/api';
-
-const JobItem = ({ item }: { item: JobStatus }) => {
-  const reprocessJob = useReprocessJob();
-  const deleteJob = useDeleteJob();
-
-  const handleReprocess = () => {
-    reprocessJob.mutate(item.uuid, {
-      onSuccess: () => showMessage({ message: 'Job reenfileirado!', type: 'success' }),
-      onError: (e: any) => showMessage({ message: e.message || 'Erro', type: 'danger' }),
-    });
-  };
-
-  const handleDelete = () => {
-    Alert.alert('Excluir job', `Confirmar exclusão do job ${item.uuid}?`, [
-      { text: 'Cancelar', style: 'cancel' },
-      {
-        text: 'Excluir',
-        style: 'destructive',
-        onPress: () =>
-          deleteJob.mutate(item.uuid, {
-            onSuccess: () => showMessage({ message: 'Job excluído!', type: 'success' }),
-            onError: (e: any) => showMessage({ message: e.message || 'Erro', type: 'danger' }),
-          }),
-      },
-    ]);
-  };
-
-  return (
-    <View style={styles.jobItem}>
-      <Text style={styles.jobUuid}>UUID: {item.uuid}</Text>
-      {item.numero_nota && <Text style={styles.jobNumero}>Número: {item.numero_nota}</Text>}
-      <Text>Status: {item.status.codigo}</Text>
-      {item.erro && <Text style={{ color: 'red' }}>Erro: {item.erro}</Text>}
-      <View style={styles.buttons}>
-        <TouchableOpacity
-          style={[styles.button, reprocessJob.isPending && styles.buttonDisabled]}
-          onPress={handleReprocess}
-          disabled={reprocessJob.isPending}
-          activeOpacity={0.7}>
-          <Text style={[styles.buttonText, reprocessJob.isPending && styles.buttonTextDisabled]}>
-            Processar
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.buttonDestructive, deleteJob.isPending && styles.buttonDisabled]}
-          onPress={handleDelete}
-          disabled={deleteJob.isPending}
-          activeOpacity={0.7}>
-          <Text style={[styles.buttonText, deleteJob.isPending && styles.buttonTextDisabled]}>
-            Excluir
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
+import TabBar from '../components/TabBar';
+import JobItemComponent from '../components/JobItemComponent';
 
 export default function JobStatusScreen() {
   const [activeTab, setActiveTab] = useState<number>(0); // 0: PENDENTE, 1: CONCLUIDO, 2: ERRO
@@ -70,6 +16,9 @@ export default function JobStatusScreen() {
   const pendentes = useListJobsPendentes();
   const concluidos = useListJobsConcluidos();
   const erros = useListJobsErros();
+
+  const reprocessJob = useReprocessJob();
+  const deleteJob = useDeleteJob();
 
   const flipTo = (newIndex: number) => {
     if (newIndex === activeTab || animatingRef.current) return;
@@ -107,9 +56,9 @@ export default function JobStatusScreen() {
   });
 
   const tabs = [
-    { key: 'PENDENTE', label: 'Pendentes' },
-    { key: 'CONCLUIDO', label: 'Concluídas' },
-    { key: 'ERRO', label: 'Erros' },
+    { key: 'PENDENTE', label: 'Pendentes', count: 0 },
+    { key: 'CONCLUIDO', label: 'Concluídas', count: 0 },
+    { key: 'ERRO', label: 'Erros', count: 0 },
   ];
 
   const pendentesTotal =
@@ -128,8 +77,26 @@ export default function JobStatusScreen() {
       0,
     ) ?? 0;
 
+  tabs[0].count = pendentesTotal;
+  tabs[1].count = concluidosTotal;
+  tabs[2].count = errosTotal;
+
   const currentQuery = activeTab === 0 ? pendentes : activeTab === 1 ? concluidos : erros;
   const currentList = currentQuery.data?.pages.flatMap((page: PaginatedResponse<JobStatus>) => page.results) || [];
+
+  const handleReprocess = (uuid: string) => {
+    reprocessJob.mutate(uuid, {
+      onSuccess: () => showMessage({ message: 'Job reenfileirado!', type: 'success' }),
+      onError: (e: any) => showMessage({ message: e.message || 'Erro', type: 'danger' }),
+    });
+  };
+
+  const handleDelete = (uuid: string) => {
+    deleteJob.mutate(uuid, {
+      onSuccess: () => showMessage({ message: 'Job excluído!', type: 'success' }),
+      onError: (e: any) => showMessage({ message: e.message || 'Erro', type: 'danger' }),
+    });
+  };
 
   if (currentQuery.isLoading && !currentQuery.isFetchingNextPage) return <Loading />;
   if (currentQuery.isError) return <Text style={{ padding: 16 }}>Erro ao buscar notas processadas.</Text>;
@@ -140,21 +107,21 @@ export default function JobStatusScreen() {
         <Text style={styles.title}>Notas processadas</Text>
       </View>
 
-      <View style={styles.tabBar}>
-        {tabs.map((t, idx) => (
-          <TouchableOpacity key={t.key} style={styles.tabButton} onPress={() => flipTo(idx)}>
-            <Text style={[styles.tabLabel, activeTab === idx && styles.tabLabelActive]}>
-              {t.label} ({idx === 0 ? pendentesTotal : idx === 1 ? concluidosTotal : errosTotal})
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <TabBar tabs={tabs} activeIndex={activeTab} onTabPress={flipTo} />
 
       <Animated.View style={[styles.animatedContainer, animatedStyle]}>
         <FlatList
           data={currentList}
           keyExtractor={(item: JobStatus) => item.uuid}
-          renderItem={({ item }: { item: JobStatus }) => <JobItem item={item} />}
+          renderItem={({ item }: { item: JobStatus }) => (
+            <JobItemComponent
+              item={item}
+              onReprocess={handleReprocess}
+              onDelete={handleDelete}
+              isReprocessing={reprocessJob.isPending}
+              isDeleting={deleteJob.isPending}
+            />
+          )}
           contentContainerStyle={{ padding: 16, gap: 12 }}
           refreshing={currentQuery.isLoading}
           onRefresh={currentQuery.refetch}
@@ -186,76 +153,15 @@ export default function JobStatusScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  jobItem: {
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    gap: 8,
-  },
-  jobUuid: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  jobNumero: {
-    fontSize: 14,
-    color: '#666',
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 8,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  buttonDestructive: {
-    backgroundColor: '#ff3b30',
-  },
-  buttonDisabled: {
-    backgroundColor: '#A0A0A0',
-    opacity: 0.6,
-  },
-  buttonTextDisabled: {
-    color: '#E0E0E0',
-  },
   header: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 12,
-    backgroundColor: '#fafafa',
-  },
-  tabButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  tabLabel: {
-    fontSize: 16,
-    color: '#333',
-  },
-  tabLabelActive: {
-    fontWeight: '700',
-    color: '#111',
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   animatedContainer: {
     flex: 1,

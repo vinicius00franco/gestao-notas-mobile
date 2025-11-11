@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`QuickAccessButton matches snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#99CD85",
+      "borderColor": "#cccccc",
+      "borderRadius": 12,
+      "borderWidth": 1,
+      "elevation": 2,
+      "marginBottom": 16,
+      "opacity": 1,
+      "paddingVertical": 16,
+      "shadowColor": "#333333",
+      "shadowOffset": {
+        "height": 2,
+        "width": 0,
+      },
+      "shadowOpacity": 0.1,
+      "shadowRadius": 4,
+      "width": "48%",
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontWeight": "600",
+        },
+        {
+          "color": "#333333",
+          "fontSize": 16,
+        },
+        {
+          "color": "#99CD85",
+        },
+      ]
+    }
+  >
+    Dashboard
+  </Text>
+</View>
+`;

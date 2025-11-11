@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`TabBar matches snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#fff",
+      "borderBottomColor": "#e0e0e0",
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "borderBottomColor": "transparent",
+        "borderBottomWidth": 3,
+        "flex": 1,
+        "opacity": 1,
+        "paddingVertical": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#666",
+            "fontSize": 14,
+            "fontWeight": "500",
+          },
+          {
+            "color": "#000",
+            "fontWeight": "600",
+          },
+        ]
+      }
+    >
+      Pendentes
+       (
+      5
+      )
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "borderBottomColor": "transparent",
+        "borderBottomWidth": 3,
+        "flex": 1,
+        "opacity": 1,
+        "paddingVertical": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#666",
+            "fontSize": 14,
+            "fontWeight": "500",
+          },
+          false,
+        ]
+      }
+    >
+      Concluídas
+       (
+      3
+      )
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "borderBottomColor": "transparent",
+        "borderBottomWidth": 3,
+        "flex": 1,
+        "opacity": 1,
+        "paddingVertical": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#666",
+            "fontSize": 14,
+            "fontWeight": "500",
+          },
+          false,
+        ]
+      }
+    >
+      Erros
+       (
+      1
+      )
+    </Text>
+  </View>
+</View>
+`;
