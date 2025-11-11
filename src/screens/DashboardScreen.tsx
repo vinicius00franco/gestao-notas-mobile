@@ -1,13 +1,15 @@
-import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboard } from '../hooks/api';
 import { useTheme } from '../theme/ThemeProvider';
-import { TopFornecedor, DashboardData, RecentNF, AlertItem } from '../types';
 import Card from '../components/Card';
 import HorizontalScrollCards from '../components/HorizontalScrollCards';
 import AlertCard from '../components/AlertCard';
 import RecentNFCard from '../components/RecentNFCard';
 import FornecedorCard from '../components/FornecedorCard';
+import KPICard from '../components/KPICard';
+import DashboardHeader from '../components/DashboardHeader';
+import DashboardFilterBar from '../components/DashboardFilterBar';
 
 import { useState } from 'react';
 
@@ -21,19 +23,10 @@ export default function DashboardScreen() {
     loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     errorText: { ...theme.typography.h2, color: theme.colors.error },
-    header: { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 8 },
-    title: { ...theme.typography.h2, color: theme.colors.text }, // Preto para título principal
     scrollContainer: { flex: 1 },
     section: { marginVertical: 8 },
-    sectionTitle: { ...theme.typography.h2, marginHorizontal: 16, marginBottom: 8, color: theme.colors.text }, // Preto para títulos de seção
+    sectionTitle: { ...theme.typography.h2, marginHorizontal: 16, marginBottom: 8, color: theme.colors.text },
     kpisContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16 },
-    kpiCard: { flex: 1, minWidth: '45%', margin: 4, padding: 16, backgroundColor: theme.colors.surface, borderRadius: 8, borderWidth: 1, borderColor: theme.colors.border },
-    kpiValue: { ...theme.typography.h1, color: theme.colors.text }, // Preto para melhor contraste
-    kpiLabel: { ...theme.typography.body, color: theme.colors.text }, // Preto para melhor contraste
-    filtersContainer: { flexDirection: 'row', paddingHorizontal: 16, marginBottom: 8 },
-    filterButton: { padding: 8, marginRight: 8, backgroundColor: theme.colors.surface, borderRadius: 4, borderWidth: 1, borderColor: theme.colors.border },
-    filterText: { ...theme.typography.body, color: theme.colors.text }, // Preto para texto dos filtros
-    nfText: { ...theme.typography.body, color: theme.colors.text }, // Preto para texto informativo
   });
 
   if (isLoading) {
@@ -52,40 +45,20 @@ export default function DashboardScreen() {
     );
   }
 
-  const renderKPI = (label: string, value: string | number) => (
-    <View style={styles.kpiCard}>
-      <Text style={styles.kpiValue}>{typeof value === 'number' ? value.toLocaleString('pt-BR') : value}</Text>
-      <Text style={styles.kpiLabel}>{label}</Text>
-    </View>
-  );
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Dashboard de Gestão de NF</Text>
-      </View>
+      <DashboardHeader />
       <ScrollView style={styles.scrollContainer}>
-        {/* Filters */}
-        <View style={styles.filtersContainer}>
-          <TouchableOpacity style={styles.filterButton} onPress={() => setFilters({ ...filters, mes: filters.mes - 1 || 12 })}>
-            <Text style={styles.filterText}>Mês Anterior</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton} onPress={() => setFilters({ ...filters, mes: filters.mes + 1 > 12 ? 1 : filters.mes + 1 })}>
-            <Text style={styles.filterText}>Próximo Mês</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.filterButton} onPress={() => setFilters({ ...filters, status: filters.status === 'Pendente' ? '' : 'Pendente' })}>
-            <Text style={styles.filterText}>Status: {filters.status || 'Todos'}</Text>
-          </TouchableOpacity>
-        </View>
+        <DashboardFilterBar filters={filters} onFilterChange={setFilters} />
 
         {/* KPIs */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Resumos</Text>
           <View style={styles.kpisContainer}>
-            {renderKPI('NF Emitidas', data.kpis.nf_emitidas)}
-            {renderKPI('NF Recebidas', data.kpis.nf_recebidas)}
-            {renderKPI('Valor Total NF Saída', `R$ ${(data.kpis.valor_total_saida / 1000).toFixed(0)}K`)}
-            {renderKPI('Impostos Retidos', `R$ ${(data.kpis.impostos_retidos / 1000).toFixed(0)}K`)}
+            <KPICard label="NF Emitidas" value={data.kpis.nf_emitidas} />
+            <KPICard label="NF Recebidas" value={data.kpis.nf_recebidas} />
+            <KPICard label="Valor Total NF Saída" value={`R$ ${(data.kpis.valor_total_saida / 1000).toFixed(0)}K`} />
+            <KPICard label="Impostos Retidos" value={`R$ ${(data.kpis.impostos_retidos / 1000).toFixed(0)}K`} />
           </View>
         </View>
 

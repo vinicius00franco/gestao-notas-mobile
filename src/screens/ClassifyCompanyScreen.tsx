@@ -1,9 +1,11 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Alert } from 'react-native';
 import { useClassifyCompany } from '../hooks/api';
 import { UnclassifiedCompany } from '../types';
+import FormField from '../components/FormField';
+import FormPicker from '../components/FormPicker';
+import FormButton from '../components/FormButton';
 
 export default function ClassifyCompanyScreen() {
   const route = useRoute<any>();
@@ -35,90 +37,77 @@ export default function ClassifyCompanyScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Classify Company</Text>
-      <TextInput
-        style={styles.input}
-        value={formData.nome_fantasia}
-        onChangeText={(value) => handleInputChange('nome_fantasia', value)}
+      <FormField
         placeholder="Nome Fantasia"
+        value={formData.nome_fantasia}
+        onChangeText={(value: string) => handleInputChange('nome_fantasia', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.razao_social}
-        onChangeText={(value) => handleInputChange('razao_social', value)}
+      <FormField
         placeholder="Razão Social"
+        value={formData.razao_social}
+        onChangeText={(value: string) => handleInputChange('razao_social', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.cnpj}
-        editable={false}
+      <FormField
         placeholder="CNPJ"
+        value={formData.cnpj}
+        onChangeText={(value: string) => handleInputChange('cnpj', value)}
+        editable={false}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.logradouro}
-        onChangeText={(value) => handleInputChange('logradouro', value)}
+      <FormField
         placeholder="Logradouro"
+        value={formData.logradouro}
+        onChangeText={(value: string) => handleInputChange('logradouro', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.numero}
-        onChangeText={(value) => handleInputChange('numero', value)}
+      <FormField
         placeholder="Número"
+        value={formData.numero}
+        onChangeText={(value: string) => handleInputChange('numero', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.bairro}
-        onChangeText={(value) => handleInputChange('bairro', value)}
+      <FormField
         placeholder="Bairro"
+        value={formData.bairro}
+        onChangeText={(value: string) => handleInputChange('bairro', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.cidade}
-        onChangeText={(value) => handleInputChange('cidade', value)}
+      <FormField
         placeholder="Cidade"
+        value={formData.cidade}
+        onChangeText={(value: string) => handleInputChange('cidade', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.uf}
-        onChangeText={(value) => handleInputChange('uf', value)}
+      <FormField
         placeholder="UF"
+        value={formData.uf}
+        onChangeText={(value: string) => handleInputChange('uf', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.cep}
-        onChangeText={(value) => handleInputChange('cep', value)}
+      <FormField
         placeholder="CEP"
+        value={formData.cep}
+        onChangeText={(value: string) => handleInputChange('cep', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.telefone}
-        onChangeText={(value) => handleInputChange('telefone', value)}
+      <FormField
         placeholder="Telefone"
+        value={formData.telefone}
+        onChangeText={(value: string) => handleInputChange('telefone', value)}
       />
-      <TextInput
-        style={styles.input}
-        value={formData.email}
-        onChangeText={(value) => handleInputChange('email', value)}
+      <FormField
         placeholder="Email"
+        value={formData.email}
+        onChangeText={(value: string) => handleInputChange('email', value)}
       />
-      <Picker
+      <FormPicker
         selectedValue={formData.classification}
-        onValueChange={(itemValue) => handleInputChange('classification', itemValue)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Fornecedor" value="fornecedor" />
-        <Picker.Item label="Cliente" value="cliente" />
-        <Picker.Item label="Outra Empresa" value="outra_empresa" />
-        <Picker.Item label="Outro" value="outro" />
-      </Picker>
-      <TouchableOpacity
-        style={[styles.button, isPending && styles.buttonDisabled]}
+        onValueChange={(value: string) => handleInputChange('classification', value)}
+        items={[
+          { label: 'Fornecedor', value: 'fornecedor' },
+          { label: 'Cliente', value: 'cliente' },
+          { label: 'Outra Empresa', value: 'outra_empresa' },
+          { label: 'Outro', value: 'outro' },
+        ]}
+      />
+      <FormButton
+        title="Save"
         onPress={handleSubmit}
         disabled={isPending}
-        activeOpacity={0.7}>
-        <Text style={[styles.buttonText, isPending && styles.buttonTextDisabled]}>Save</Text>
-      </TouchableOpacity>
+      />
     </ScrollView>
   );
 }
@@ -126,44 +115,5 @@ export default function ClassifyCompanyScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 8,
-    borderRadius: 6,
-    marginBottom: 12,
-  },
-  picker: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 6,
-    marginBottom: 12,
-  },
-  button: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 8,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  buttonDisabled: {
-    backgroundColor: '#A0A0A0',
-    opacity: 0.6,
-  },
-  buttonTextDisabled: {
-    color: '#E0E0E0',
   },
 });

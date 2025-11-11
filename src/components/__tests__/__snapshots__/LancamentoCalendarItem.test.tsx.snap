@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`LancamentoCalendarItem matches snapshot - PAGAR 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#CCCCCC",
+      "borderBottomWidth": 1,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "fontWeight": "bold",
+        },
+      ]
+    }
+  >
+    Empresa A
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "color": "#FF0000",
+        },
+      ]
+    }
+  >
+    R$ 1.000,50
+  </Text>
+</View>
+`;
+
+exports[`LancamentoCalendarItem matches snapshot - RECEBER 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#CCCCCC",
+      "borderBottomWidth": 1,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "fontWeight": "bold",
+        },
+      ]
+    }
+  >
+    Empresa B
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "color": "#00FF00",
+        },
+      ]
+    }
+  >
+    R$ 2.000,75
+  </Text>
+</View>
+`;

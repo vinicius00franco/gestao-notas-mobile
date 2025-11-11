@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AccountItem matches snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "borderBottomWidth": 1,
+      "borderColor": "#cccccc",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "padding": 16,
+    }
+  }
+>
+  <View
+    style={{}}
+  >
+    <Text
+      style={
+        {
+          "color": "#333333",
+          "fontSize": 16,
+          "fontWeight": "600",
+        }
+      }
+    >
+      Conta de luz
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#a9a9a9",
+          "fontSize": 12,
+        }
+      }
+    >
+      Venc.: 14/01/2024
+    </Text>
+  </View>
+  <Text>
+    R$ 150,50
+  </Text>
+</View>
+`;

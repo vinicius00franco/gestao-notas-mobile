@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`FormField matches snapshot 1`] = `
+<TextInput
+  editable={true}
+  onChangeText={[Function]}
+  placeholder="Nome Fantasia"
+  style={
+    {
+      "borderColor": "#ddd",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "marginBottom": 12,
+      "padding": 8,
+    }
+  }
+  value=""
+/>
+`;
+
+exports[`FormField matches snapshot with value 1`] = `
+<TextInput
+  editable={true}
+  onChangeText={[Function]}
+  placeholder="Nome Fantasia"
+  style={
+    {
+      "borderColor": "#ddd",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "marginBottom": 12,
+      "padding": 8,
+    }
+  }
+  value="Empresa Teste"
+/>
+`;

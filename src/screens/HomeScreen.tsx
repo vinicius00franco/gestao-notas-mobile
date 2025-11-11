@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, BackHandler, Platform, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, BackHandler, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/theme/ThemeProvider';
+import MainButton from '@/components/MainButton';
+import QuickAccessButton from '@/components/QuickAccessButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
@@ -44,42 +46,22 @@ export default function HomeScreen() {
           Acesse rapidamente as principais funcionalidades do app.
         </Text>
 
-        <TouchableOpacity
-          style={[styles.mainButton, { backgroundColor: colors.primary, marginBottom: spacing.xl }, shadows.medium]}
-          onPress={() => entrar()}
-          activeOpacity={0.8}>
-          <Text style={[styles.mainButtonText, typography.h2, { color: colors.onPrimary }]}>Entrar no App</Text>
-        </TouchableOpacity>
+        <MainButton title="Entrar no App" onPress={() => entrar()} />
 
         <View style={styles.quickAccessContainer}>
           {quickAccessButtons.map((button, index) => (
-            <TouchableOpacity
+            <QuickAccessButton
               key={index}
-              style={[
-                styles.quickAccessButton,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.border,
-                  width: '48%',
-                  marginBottom: spacing.m,
-                },
-                shadows.small,
-              ]}
+              title={button.title}
               onPress={() => entrar(button.screen)}
-              activeOpacity={0.7}>
-              <Text style={[styles.quickAccessButtonText, typography.body, { color: colors.primary }]}>
-                {button.title}
-              </Text>
-            </TouchableOpacity>
+            />
           ))}
         </View>
 
-        <TouchableOpacity
-          style={[styles.exitButton, { marginTop: 'auto', backgroundColor: colors.error }]}
+        <QuickAccessButton
+          title="Sair do App"
           onPress={sairDoApp}
-          activeOpacity={0.8}>
-          <Text style={[styles.exitButtonText, { color: colors.onError }]}>Sair do App</Text>
-        </TouchableOpacity>
+        />
       </View>
     </SafeAreaView>
   );
@@ -100,39 +82,10 @@ const styles = StyleSheet.create({
   subtitle: {
     textAlign: 'center',
   },
-  mainButton: {
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 30,
-    width: '100%',
-    alignItems: 'center',
-  },
-  mainButtonText: {
-    fontWeight: 'bold',
-  },
   quickAccessContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  quickAccessButton: {
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  quickAccessButtonText: {
-    fontWeight: '600',
-  },
-  exitButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 20,
-    alignItems: 'center',
-  },
-  exitButtonText: {
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });

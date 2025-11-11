@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
-import NotaFiscalCard from '../components/NotaFiscalCard';
+import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, FlatList, Text } from 'react-native';
 import { NotaFiscal, Classificacao } from '../types';
 import { useNotasFiscais, useClassificacoes, useUpdateNotaFiscalClassificacao } from '../hooks/api';
 import { useTheme } from '@/theme/ThemeProvider';
+import NotaFiscalCard from '../components/NotaFiscalCard';
+import KanbanColumn from '../components/KanbanColumn';
 
 type KanbanColumn = Classificacao & { notas: NotaFiscal[] };
 
@@ -71,31 +72,14 @@ const ClassifyNotasKanbanScreen = () => {
   return (
     <ScrollView style={{ flex: 1, backgroundColor: colors.background }}>
       {data.map(column => (
-        <View key={column.id} style={styles.column}>
-          <Text style={[styles.columnHeader, { color: colors.onBackground }]}>{column.nome}</Text>
-          <FlatList
-            data={column.notas}
-            renderItem={renderItem}
-            keyExtractor={(item) => `nota-${(item as any).uuid}`}
-            contentContainerStyle={{ flexGrow: 1 }}
-          />
-        </View>
+        <KanbanColumn key={column.id} column={column} />
       ))}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  column: {
-    marginVertical: 10,
-    paddingVertical: 10,
-  },
-  columnHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    paddingHorizontal: 20,
-  },
+  // Estilos podem ser removidos se não forem usados
 });
 
 export default ClassifyNotasKanbanScreen;

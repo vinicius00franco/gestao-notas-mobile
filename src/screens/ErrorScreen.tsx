@@ -1,59 +1,32 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { colors } from '../theme/colors';
+import { View, StyleSheet } from 'react-native';
+import { useTheme } from '../theme/ThemeProvider';
+import ErrorMessage from '../components/ErrorMessage';
+import ErrorButton from '../components/ErrorButton';
 
 interface Props {
   onRetry: () => void;
 }
 
 const ErrorScreen: React.FC<Props> = ({ onRetry }) => {
+  const theme = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.colors.background,
+      padding: theme.spacing.l,
+    },
+  });
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Oops! Algo deu errado.</Text>
-      <Text style={styles.message}>
-        Não foi possível concluir sua solicitação. Por favor, tente novamente.
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={onRetry} activeOpacity={0.7}>
-        <Text style={styles.buttonText}>Tentar Novamente</Text>
-      </TouchableOpacity>
+      <ErrorMessage title="Oops! Algo deu errado." message="Não foi possível concluir sua solicitação. Por favor, tente novamente." />
+      <ErrorButton onRetry={onRetry} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  message: {
-    fontSize: 16,
-    color: colors.text,
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  button: {
-    backgroundColor: colors.primary,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});
 
 export default ErrorScreen;

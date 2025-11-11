@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`LancamentoMesItem matches snapshot - PAGAR 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#CCCCCC",
+      "borderBottomWidth": 1,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "fontWeight": "bold",
+        },
+      ]
+    }
+  >
+    Compra de Fertilizantes
+     (
+    2023-10-05
+    )
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "color": "#FF0000",
+        },
+      ]
+    }
+  >
+    R$ 350,80
+  </Text>
+</View>
+`;
+
+exports[`LancamentoMesItem matches snapshot - RECEBER 1`] = `
+<View
+  style={
+    {
+      "borderBottomColor": "#CCCCCC",
+      "borderBottomWidth": 1,
+      "paddingVertical": 12,
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "fontWeight": "bold",
+        },
+      ]
+    }
+  >
+    Venda de Alface
+     (
+    2023-10-10
+    )
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 16,
+        },
+        {
+          "color": "#00FF00",
+        },
+      ]
+    }
+  >
+    R$ 750,00
+  </Text>
+</View>
+`;

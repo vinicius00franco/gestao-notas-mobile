@@ -5,7 +5,8 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { CalendarDiaItem } from '../api/services/calendarService';
 import { useCalendarDia, useCalendarResumo, useContasAPagar, useContasAReceber } from '../hooks/api';
 import { Lancamento } from '../types';
-import { formatCurrencyBRL } from '../utils/format';
+import LancamentoCalendarItem from '../components/LancamentoCalendarItem';
+import LancamentoMesItem from '../components/LancamentoMesItem';
 
 LocaleConfig.locales['pt-br'] = {
   monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -18,30 +19,6 @@ LocaleConfig.defaultLocale = 'pt-br';
 
 type DateData = { dateString: string; day: number; month: number; year: number; timestamp: number };
 type MarkedDates = Record<string, any>;
-
-const LancamentoCalendarItem = ({ item, colors, typography }: { item: CalendarDiaItem; colors: any; typography: any }) => {
-  const isPagar = item.tipo === 'PAGAR';
-  return (
-    <View style={[styles.detailItem, { borderBottomColor: colors.border }]}>
-      <Text style={[typography.body, { color: colors.text, fontWeight: 'bold' }]}>{item.nome_fantasia}</Text>
-      <Text style={[typography.body, { color: isPagar ? colors.error : colors.secondary }]}>
-        {formatCurrencyBRL(item.valor)}
-      </Text>
-    </View>
-  );
-};
-
-const LancamentoMesItem = ({ item, colors, typography }: { item: Lancamento; colors: any; typography: any }) => {
-    const isPagar = item.clf_tipo.nome === 'A Pagar';
-    return (
-      <View style={[styles.detailItem, { borderBottomColor: colors.border }]}>
-        <Text style={[typography.body, { color: colors.text, fontWeight: 'bold' }]}>{item.descricao} ({item.data_vencimento})</Text>
-        <Text style={[typography.body, { color: isPagar ? colors.error : colors.secondary }]}>
-          {formatCurrencyBRL(item.valor)}
-        </Text>
-      </View>
-    );
-  };
 
 const CalendarScreen = () => {
   const { colors, spacing, typography } = useTheme();
@@ -110,7 +87,7 @@ const CalendarScreen = () => {
               <Text style={{ color: colors.primary }}>Visão do Mês</Text>
             </TouchableOpacity>
           </View>
-          {diaData?.detalhes?.map((item, index) => <LancamentoCalendarItem key={index} item={item} colors={colors} typography={typography} />)}
+          {diaData?.detalhes?.map((item, index) => <LancamentoCalendarItem key={index} item={item} />)}
         </>
       );
     }
@@ -118,7 +95,7 @@ const CalendarScreen = () => {
     return (
       <>
         <Text style={[typography.h2, { color: colors.text, marginBottom: spacing.s }]}>Lançamentos do Mês</Text>
-        {detalhesDoMes.map(item => <LancamentoMesItem key={item.uuid} item={item} colors={colors} typography={typography} />)}
+        {detalhesDoMes.map(item => <LancamentoMesItem key={item.uuid} item={item} />)}
       </>
     );
   };

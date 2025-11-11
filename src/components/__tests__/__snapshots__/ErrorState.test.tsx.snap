@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ErrorState matches snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "justifyContent": "center",
+      "padding": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "fontSize": 16,
+        "marginBottom": 16,
+      }
+    }
+  >
+    Erro ao buscar dados
+  </Text>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#6200ee",
+        "borderRadius": 8,
+        "opacity": 1,
+        "padding": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "white",
+        }
+      }
+    >
+      Tentar novamente
+    </Text>
+  </View>
+</View>
+`;

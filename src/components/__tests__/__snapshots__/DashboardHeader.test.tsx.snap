@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`DashboardHeader matches snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingBottom": 8,
+        "paddingTop": 4,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {},
+        {
+          "color": "#333333",
+          "fontSize": 24,
+          "fontWeight": "bold",
+        },
+        {
+          "color": "#333333",
+        },
+      ]
+    }
+  >
+    Dashboard de Gestão de NF
+  </Text>
+</View>
+`;
