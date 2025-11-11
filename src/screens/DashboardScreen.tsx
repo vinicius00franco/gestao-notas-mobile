@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboard } from '../hooks/api';
 import { useTheme } from '../theme/ThemeProvider';
@@ -8,20 +8,6 @@ import HorizontalScrollCards from '../components/HorizontalScrollCards';
 import AlertCard from '../components/AlertCard';
 import RecentNFCard from '../components/RecentNFCard';
 import FornecedorCard from '../components/FornecedorCard';
-// Conditionally import chart components only for native platforms
-let LineChartCard: any = null;
-let BarChartCard: any = null;
-let DonutChartCard: any = null;
-
-if (Platform.OS !== 'web') {
-  try {
-    LineChartCard = require('../components/charts/LineChartCard').default;
-    BarChartCard = require('../components/charts/BarChartCard').default;
-    DonutChartCard = require('../components/charts/DonutChartCard').default;
-  } catch (e) {
-    console.warn('Chart components not available');
-  }
-}
 
 import { useState } from 'react';
 
@@ -73,28 +59,6 @@ export default function DashboardScreen() {
     </View>
   );
 
-  const tendenciaData = data.charts.tendencia_valor_imposto.map(d => ({ x: d.mes, y: d.valor_bruto }));
-  const impostosData = data.charts.tendencia_valor_imposto.map(d => ({ x: d.mes, y: d.valor_impostos }));
-  
-  // Use all data for volume chart instead of filtering
-  const volumeByType = data.charts.volume_tipo_nf.reduce((acc, d) => {
-    const existing = acc.find(item => item.x === d.tipo);
-    if (existing) {
-      existing.y += d.quantidade;
-    } else {
-      acc.push({ x: d.tipo, y: d.quantidade });
-    }
-    return acc;
-  }, [] as { x: string; y: number }[]);
-  const volumeData = volumeByType;
-
-  // Aggregate impostos by tipo
-  const impostosAgg = data.charts.distribuicao_impostos.reduce((acc, d) => {
-    acc[d.tipo] = (acc[d.tipo] || 0) + d.valor;
-    return acc;
-  }, {} as Record<string, number>);
-  const impostosDonutData = Object.entries(impostosAgg).map(([tipo, valor]) => ({ x: tipo, y: valor }));
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -124,21 +88,6 @@ export default function DashboardScreen() {
             {renderKPI('Impostos Retidos', `R$ ${(data.kpis.impostos_retidos / 1000).toFixed(0)}K`)}
           </View>
         </View>
-
-        {/* Charts */}
-        {LineChartCard && BarChartCard && DonutChartCard ? (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Gráficos</Text>
-            <LineChartCard title="Tendência: Valor vs. Imposto (Mensal)" data={tendenciaData} />
-            <DonutChartCard title="Distribuição de Impostos" data={impostosDonutData} />
-            <BarChartCard title="Volume vs. Tipo de NF" data={volumeData} />
-          </View>
-        ) : (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Gráficos</Text>
-            <Text style={styles.nfText}>Gráficos não disponíveis no Expo Go. Use um build de desenvolvimento nativo.</Text>
-          </View>
-        )}
 
         {/* Alerts */}
         <HorizontalScrollCards title="Alertas Fiscais">
