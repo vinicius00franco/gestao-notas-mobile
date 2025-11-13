@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, BackHandler, Platform, Alert } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/theme/ThemeProvider';
-import MainButton from '@/components/MainButton';
-import QuickAccessButton from '@/components/QuickAccessButton';
+import MainButton from '@/components/ui/MainButton';
+import QuickAccessButton from '@/components/ui/QuickAccessButton';
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();

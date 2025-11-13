@@ -2,13 +2,13 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useNotasFiscais, useDeleteNotaFiscal } from '../hooks/api';
-import Loading from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
+import Loading from '@/components/ui/Loading';
+import ErrorState from '@/components/ui/ErrorState';
 import { NotaFiscal } from '@/types';
-import withErrorBoundary from '@/components/withErrorBoundary';
-import NotaFiscalListHeader from '@/components/NotaFiscalListHeader';
-import NotaFiscalListItem from '@/components/NotaFiscalListItem';
-import EmptyState from '@/components/EmptyState';
+import withErrorBoundary from '@/components/ui/withErrorBoundary';
+import NotaFiscalListHeader from '@/components/nota-fiscal/NotaFiscalListHeader';
+import NotaFiscalListItem from '@/components/nota-fiscal/NotaFiscalListItem';
+import EmptyState from '@/components/ui/EmptyState';
 
 function NotasFiscaisScreen() {
   const { data: notas, isLoading, isError, error, refetch } = useNotasFiscais();

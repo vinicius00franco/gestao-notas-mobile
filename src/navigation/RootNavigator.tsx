@@ -8,8 +8,8 @@ import React, { useCallback, useEffect } from 'react';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import { useGlobalStore } from '../store/global';
 
-import CustomDrawerContent from '@/components/CustomDrawerContent';
-import withErrorBoundary from '@/components/withErrorBoundary';
+import CustomDrawerContent from '@/components/navigation/CustomDrawerContent';
+import withErrorBoundary from '@/components/ui/withErrorBoundary';
 import CalendarScreen from '@/screens/CalendarScreen';
 import ClassifyCompanyScreen from '@/screens/ClassifyCompanyScreen';
 import ClassifyNotasKanbanScreen from '@/screens/ClassifyNotasKanbanScreen';

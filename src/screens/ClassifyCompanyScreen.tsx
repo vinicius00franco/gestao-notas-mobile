@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Alert } from 'react-native';
 import { useClassifyCompany } from '../hooks/api';
 import { UnclassifiedCompany } from '../types';
-import FormField from '../components/FormField';
-import FormPicker from '../components/FormPicker';
-import FormButton from '../components/FormButton';
+import FormField from '@/components/ui/FormField';
+import FormPicker from '@/components/ui/FormPicker';
+import FormButton from '@/components/ui/FormButton';
 
 export default function ClassifyCompanyScreen() {
   const route = useRoute<any>();

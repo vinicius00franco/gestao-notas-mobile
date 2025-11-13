@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { useUploadNota } from '../hooks/api';
-import FilePickerButton from '@/components/FilePickerButton';
-import CNPJInput from '@/components/CNPJInput';
-import UploadSubmitButton from '@/components/UploadSubmitButton';
-import UploadSection from '@/components/UploadSection';
+import FilePickerButton from '@/components/upload/FilePickerButton';
+import CNPJInput from '@/components/ui/CNPJInput';
+import UploadSubmitButton from '@/components/upload/UploadSubmitButton';
+import UploadSection from '@/components/upload/UploadSection';
 
 export default function UploadNotaScreen() {
   const [cnpj, setCnpj] = useState('');

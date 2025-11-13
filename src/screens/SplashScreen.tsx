@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import SplashContent from '@/components/SplashContent';
+import SplashContent from '@/components/splash/SplashContent';
 
 const SplashScreen = () => {
   const { colors } = useTheme();

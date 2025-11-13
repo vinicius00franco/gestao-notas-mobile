@@ -2,11 +2,11 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { NotaFiscal } from '@/types';
-import withErrorBoundary from '@/components/withErrorBoundary';
+import withErrorBoundary from '@/components/ui/withErrorBoundary';
 import { useDeleteNotaFiscal } from '../hooks/api';
-import NotaFiscalDetailHeader from '@/components/NotaFiscalDetailHeader';
-import NotaFiscalInfo from '@/components/NotaFiscalInfo';
-import DeleteNotaButton from '@/components/DeleteNotaButton';
+import NotaFiscalDetailHeader from '@/components/nota-fiscal/NotaFiscalDetailHeader';
+import NotaFiscalInfo from '@/components/nota-fiscal/NotaFiscalInfo';
+import DeleteNotaButton from '@/components/nota-fiscal/DeleteNotaButton';
 
 function NotaFiscalDetailScreen() {
   const route = useRoute<any>();

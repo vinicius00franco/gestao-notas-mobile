@@ -3,9 +3,9 @@ import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableOpacity, Flat
 import { NotaFiscal, Classificacao } from '../types';
 import { useNotasFiscais, useClassificacoes, useUpdateNotaFiscalClassificacao } from '../hooks/api';
 import { useTheme } from '@/theme/ThemeProvider';
-import NotaFiscalCard from '../components/NotaFiscalCard';
-import KanbanBoard from '../components/KanbanBoard';
-import { moveNotaBetweenColumns, KanbanColumnData } from '../utils/moveBetweenColumns';
+import NotaFiscalCard from '@/components/nota-fiscal/NotaFiscalCard';
+import KanbanBoard from '@/components/kanban/KanbanBoard';
+import { moveNotaBetweenColumns, KanbanColumnData } from '@/utils/moveBetweenColumns';
 
 type KanbanColumn = Classificacao & { notas: NotaFiscal[] };
 

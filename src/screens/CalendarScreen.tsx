@@ -5,8 +5,8 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { CalendarDiaItem } from '../api/services/calendarService';
 import { useCalendarDia, useCalendarResumo, useContasAPagar, useContasAReceber } from '../hooks/api';
 import { Lancamento } from '../types';
-import LancamentoCalendarItem from '../components/LancamentoCalendarItem';
-import LancamentoMesItem from '../components/LancamentoMesItem';
+import LancamentoCalendarItem from '@/components/lancamento/LancamentoCalendarItem';
+import LancamentoMesItem from '@/components/lancamento/LancamentoMesItem';
 
 LocaleConfig.locales['pt-br'] = {
   monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],

@@ -3,11 +3,11 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useUnclassifiedCompanies } from '../hooks/api';
 import { UnclassifiedCompany } from '../types';
-import Loading from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import CompanyListHeader from '@/components/CompanyListHeader';
-import CompanyListItem from '@/components/CompanyListItem';
-import EmptyState from '@/components/EmptyState';
+import Loading from '@/components/ui/Loading';
+import ErrorState from '@/components/ui/ErrorState';
+import CompanyListHeader from '@/components/company/CompanyListHeader';
+import CompanyListItem from '@/components/company/CompanyListItem';
+import EmptyState from '@/components/ui/EmptyState';
 
 export default function UnclassifiedCompaniesScreen() {
   const navigation = useNavigation<any>();

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, FlatList, Text } from 'react-native';
 import { useContasAReceber } from '../hooks/api';
-import Loading from '@/components/Loading';
-import ErrorState from '@/components/ErrorState';
-import AccountItem from '@/components/AccountItem';
+import Loading from '@/components/ui/Loading';
+import ErrorState from '@/components/ui/ErrorState';
+import AccountItem from '@/components/account/AccountItem';
 
 export default function ContasAReceberScreen() {
   const { data, isLoading, isError, refetch } = useContasAReceber();

@@ -1,12 +1,12 @@
-import Loading from '@/components/Loading';
+import Loading from '@/components/ui/Loading';
 import { JobStatus, PaginatedResponse } from '@/types';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useDeleteJob, useListJobsConcluidos, useListJobsErros, useListJobsPendentes, useReprocessJob } from '../hooks/api';
-import TabBar from '../components/TabBar';
-import JobItemComponent from '../components/JobItemComponent';
+import TabBar from '@/components/ui/TabBar';
+import JobItemComponent from '@/components/job/JobItemComponent';
 
 export default function JobStatusScreen() {
   const [activeTab, setActiveTab] = useState<number>(0); // 0: PENDENTE, 1: CONCLUIDO, 2: ERRO

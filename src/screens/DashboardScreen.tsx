@@ -2,14 +2,14 @@ import { ActivityIndicator, StyleSheet, Text, View, ScrollView } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboard } from '../hooks/api';
 import { useTheme } from '../theme/ThemeProvider';
-import Card from '../components/Card';
-import HorizontalScrollCards from '../components/HorizontalScrollCards';
-import AlertCard from '../components/AlertCard';
-import RecentNFCard from '../components/RecentNFCard';
-import FornecedorCard from '../components/FornecedorCard';
-import KPICard from '../components/KPICard';
-import DashboardHeader from '../components/DashboardHeader';
-import DashboardFilterBar from '../components/DashboardFilterBar';
+import Card from '@/components/ui/Card';
+import HorizontalScrollCards from '@/components/ui/HorizontalScrollCards';
+import AlertCard from '@/components/ui/AlertCard';
+import RecentNFCard from '@/components/nota-fiscal/RecentNFCard';
+import FornecedorCard from '@/components/company/FornecedorCard';
+import KPICard from '@/components/dashboard/KPICard';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import DashboardFilterBar from '@/components/dashboard/DashboardFilterBar';
 
 import { useState } from 'react';
 

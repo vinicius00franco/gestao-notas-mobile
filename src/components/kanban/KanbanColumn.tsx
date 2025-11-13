@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, FlatList, NativeSyntheticEvent, LayoutChangeEvent } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
-import { NotaFiscal } from '../types';
+import { NotaFiscal } from '@/types';
 import KanbanCard from './KanbanCard';
 
 interface KanbanColumnProps {
@@ -10,30 +10,69 @@ interface KanbanColumnProps {
     nome: string;
     notas: NotaFiscal[];
   };
-  columnIndex?: number;
-  onDragStart?: (item: NotaFiscal, columnIndex: number, itemIndex: number) => void;
-  onDragEnd?: (
-    item: NotaFiscal,
-    fromColumnIndex: number,
-    toColumnIndex: number,
-    fromIndex: number,
-    toIndex: number
-  ) => void;
+  columnIndex: number;
+  onDragStart: (item: NotaFiscal, columnIndex: number, itemIndex: number, x: number, y: number) => void;
+  onDrag: (x: number, y: number) => void;
+  onDragEnd: () => void;
+  draggingItem: { nota: NotaFiscal; columnIndex: number; itemIndex: number } | null;
+  dragPosition: { x: number; y: number } | null;
+  itemLayouts: Array<{ y: number; height: number }>;
+  onItemLayout: (index: number, y: number, height: number) => void;
 }
 
-const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, columnIndex = 0, onDragStart, onDragEnd }) => {
+const KanbanColumn: React.FC<KanbanColumnProps> = ({
+  column,
+  columnIndex,
+  onDragStart,
+  onDrag,
+  onDragEnd,
+  draggingItem,
+  dragPosition,
+  itemLayouts,
+  onItemLayout,
+}) => {
   const { colors, typography } = useTheme();
+  const columnLayoutRef = useRef<{ y: number; height: number } | null>(null);
 
-  const renderNotaFiscal = ({ item, index }: { item: NotaFiscal; index: number }) => (
-    <KanbanCard
-      nota={item}
-      onPress={() => {}}
-      onLongPress={(nf) => onDragStart?.(nf, columnIndex, index)}
-    />
-  );
+  const handleColumnLayout = (e: NativeSyntheticEvent<LayoutChangeEvent>) => {
+    const { y, height } = e.nativeEvent.layout;
+    columnLayoutRef.current = { y, height };
+  };
+
+  const isDraggingFromThisColumn =
+    draggingItem && draggingItem.columnIndex === columnIndex;
+
+  const renderNotaFiscal = ({ item, index }: { item: NotaFiscal; index: number }) => {
+    const isDraggingThisItem =
+      isDraggingFromThisColumn && draggingItem?.itemIndex === index;
+
+    return (
+      <View
+        onLayout={(e) => {
+          const { y, height } = e.nativeEvent.layout;
+          onItemLayout(index, y, height);
+        }}
+        style={isDraggingThisItem ? { opacity: 0.3 } : {}}
+      >
+        <KanbanCard
+          nota={item}
+          index={index}
+          columnIndex={columnIndex}
+          onDragStart={onDragStart}
+          onDrag={onDrag}
+          onDragEnd={onDragEnd}
+          isDragging={isDraggingThisItem}
+        />
+      </View>
+    );
+  };
 
   return (
-    <View testID="kanban-column" style={[styles.column, { backgroundColor: colors.background, borderColor: colors.border }]}>
+    <View
+      testID="kanban-column"
+      style={[styles.column, { backgroundColor: colors.background, borderColor: colors.border }]}
+      onLayout={handleColumnLayout}
+    >
       <View style={[styles.header, { backgroundColor: colors.primaryVariant }]}>
         <Text style={[typography.h2, { color: colors.onPrimary, flex: 1 }]}>{column.nome}</Text>
         <View style={[styles.badge, { backgroundColor: colors.secondary }]}>
@@ -49,6 +88,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, columnIndex = 0, on
         keyExtractor={(item) => item.uuid}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        scrollEnabled={!draggingItem}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={[typography.caption, { color: colors.placeholder }]}>Nenhuma nota fiscal</Text>
