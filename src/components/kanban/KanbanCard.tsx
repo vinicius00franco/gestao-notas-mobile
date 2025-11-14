@@ -1,6 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
+import {
+  PanGestureHandler,
+  LongPressGestureHandler,
+  PanGestureHandlerGestureEvent,
+  LongPressGestureHandlerStateChangeEvent,
+  State,
+} from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -20,6 +26,19 @@ interface KanbanCardProps {
   isDragging: boolean;
 }
 
+/**
+ * KanbanCard - Card arrastável no quadro Kanban
+ * 
+ * Este componente implementa a funcionalidade de arrastar e soltar usando:
+ * - LongPressGestureHandler: Detecta quando o usuário pressiona e segura o card
+ * - PanGestureHandler: Rastreia o movimento do dedo durante o arrasto
+ * - Reanimated: Fornece animações suaves e feedback visual
+ * 
+ * Fluxo de eventos:
+ * 1. Usuário pressiona e segura (300ms) -> onLongPress -> onDragStart
+ * 2. Usuário move o dedo -> panHandler -> onDrag
+ * 3. Usuário solta -> panHandler (END) -> onDragEnd
+ */
 const KanbanCard: React.FC<KanbanCardProps> = ({
   nota,
   index,
@@ -30,48 +49,79 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   isDragging,
 }) => {
   const { colors, typography, shadows } = useTheme();
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
-  const zIndex = useSharedValue(0);
-  const startX = useSharedValue(0);
-  const startY = useSharedValue(0);
+  // Valores animados para controlar a aparência do card durante o arrasto
+  const translateX = useSharedValue(0);  // Posição X do card
+  const translateY = useSharedValue(0);  // Posição Y do card
+  const scale = useSharedValue(1);       // Escala (aumenta durante arrasto)
+  const opacity = useSharedValue(1);     // Opacidade (diminui durante arrasto)
+  const zIndex = useSharedValue(0);      // Z-index (eleva card durante arrasto)
+  const isDraggingRef = useSharedValue(false);  // Flag de controle de arrasto
+  
+  // Refs para os handlers de gesto (necessários para simultaneousHandlers)
+  const longPressRef = React.useRef(null);
+  const panRef = React.useRef(null);
 
   const formatCurrency = (value: string | number) => {
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
     return `R$ ${numValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
   };
 
-  const gestureHandler = (event: PanGestureHandlerGestureEvent) => {
+  /**
+   * Handler de long press - Inicia o processo de arrasto
+   * Chamado quando o usuário pressiona e segura o card por 300ms
+   */
+  const onLongPress = (event: LongPressGestureHandlerStateChangeEvent) => {
     'worklet';
-    if (event.nativeEvent.state === 2) {
-      // ACTIVE
-      translateX.value = startX.value + event.nativeEvent.translationX;
-      translateY.value = startY.value + event.nativeEvent.translationY;
-      
-      // Tentar obter coordenadas absolutas
-      const x = (event.nativeEvent as any).absoluteX ?? event.nativeEvent.x;
-      const y = (event.nativeEvent as any).absoluteY ?? event.nativeEvent.y;
-      runOnJS(onDrag)(x, y);
-    } else if (event.nativeEvent.state === 1) {
-      // START
-      startX.value = translateX.value;
-      startY.value = translateY.value;
+    if (event.nativeEvent.state === State.ACTIVE) {
+      isDraggingRef.value = true;
+      // Feedback visual: aumenta o card e reduz opacidade
       scale.value = withSpring(1.05);
       opacity.value = withSpring(0.9);
-      zIndex.value = 1000;
+      zIndex.value = 1000;  // Coloca o card na frente de tudo
       
+      // Obtém coordenadas absolutas do toque
       const x = (event.nativeEvent as any).absoluteX ?? event.nativeEvent.x;
       const y = (event.nativeEvent as any).absoluteY ?? event.nativeEvent.y;
       runOnJS(onDragStart)(nota, columnIndex, index, x, y);
-    } else if (event.nativeEvent.state === 3 || event.nativeEvent.state === 5) {
-      // END ou CANCELLED
+    }
+  };
+
+  /**
+   * Handler de pan - Gerencia o movimento do card durante o arrasto
+   * Rastreia a posição do dedo e notifica o KanbanBoard
+   */
+  const panHandler = (event: PanGestureHandlerGestureEvent) => {
+    'worklet';
+    const state = event.nativeEvent.state;
+    
+    if (state === State.BEGAN) {
+      // Início do movimento (opcional)
+      if (!isDraggingRef.value) {
+        return;
+      }
+    } else if (state === State.ACTIVE) {
+      // Durante o movimento: atualiza posição do card
+      if (!isDraggingRef.value) {
+        return;
+      }
+      translateX.value = event.nativeEvent.translationX;
+      translateY.value = event.nativeEvent.translationY;
+      
+      // Calcula posição absoluta e notifica o board
+      const x = (event.nativeEvent as any).absoluteX ?? event.nativeEvent.translationX;
+      const y = (event.nativeEvent as any).absoluteY ?? event.nativeEvent.translationY;
+      runOnJS(onDrag)(x, y);
+    } else if (state === State.END || state === State.CANCELLED || state === State.FAILED) {
+      // Fim do arrasto: restaura estado original
+      if (!isDraggingRef.value) {
+        return;
+      }
       scale.value = withSpring(1);
       opacity.value = withSpring(1);
       zIndex.value = 0;
       translateX.value = withSpring(0);
       translateY.value = withSpring(0);
+      isDraggingRef.value = false;
       runOnJS(onDragEnd)();
     }
   };
@@ -94,31 +144,47 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   }));
 
   return (
-    <PanGestureHandler onGestureEvent={gestureHandler} enabled={!isDragging}>
+    <LongPressGestureHandler
+      ref={longPressRef}
+      onHandlerStateChange={onLongPress}
+      minDurationMs={300}
+      maxDist={20}
+      simultaneousHandlers={panRef}
+    >
       <Animated.View style={[styles.container, animatedStyle]}>
-        <Animated.View
-          style={[
-            styles.card,
-            { backgroundColor: colors.surface },
-            cardStyle,
-            shadows.small,
-          ]}
+        <PanGestureHandler
+          ref={panRef}
+          onGestureEvent={panHandler}
+          onHandlerStateChange={panHandler}
+          simultaneousHandlers={longPressRef}
+          activeOffsetX={[-5, 5]}
+          activeOffsetY={[-5, 5]}
+          enabled={true}
         >
-          <Text style={[typography.body, { color: colors.onSurface, fontWeight: 'bold' }]}>
-            {nota.nome_emitente}
-          </Text>
-          <Text style={[typography.caption, { color: colors.onSurfaceVariant }]}>
-            NF: {nota.numero}
-          </Text>
-          <Text style={[typography.body, { color: colors.primary, fontWeight: 'bold' }]}>
-            {formatCurrency(nota.valor_total)}
-          </Text>
-          <Text style={[typography.caption, { color: colors.onSurfaceVariant }]}>
-            {nota.parceiro.cnpj}
-          </Text>
-        </Animated.View>
+          <Animated.View
+            style={[
+              styles.card,
+              { backgroundColor: colors.surface },
+              cardStyle,
+              shadows.small,
+            ]}
+          >
+            <Text style={[typography.body, { color: colors.onSurface, fontWeight: 'bold' }]}>
+              {nota.nome_emitente}
+            </Text>
+            <Text style={[typography.caption, { color: colors.onSurfaceVariant }]}>
+              NF: {nota.numero}
+            </Text>
+            <Text style={[typography.body, { color: colors.primary, fontWeight: 'bold' }]}>
+              {formatCurrency(nota.valor_total)}
+            </Text>
+            <Text style={[typography.caption, { color: colors.onSurfaceVariant }]}>
+              {nota.parceiro.cnpj}
+            </Text>
+          </Animated.View>
+        </PanGestureHandler>
       </Animated.View>
-    </PanGestureHandler>
+    </LongPressGestureHandler>
   );
 };
 

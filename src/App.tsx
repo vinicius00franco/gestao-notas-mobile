@@ -4,6 +4,7 @@ import 'react-native-reanimated';
 import React from 'react';
 import { AppState, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RootNavigator from '@/navigation/RootNavigator';
 import NotificationsService from '@/services/notifications';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -44,14 +45,16 @@ export default function App() {
     return () => sub.remove();
   }, []);
   return (
-    <SafeAreaProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <StatusBar style="auto" />
-          <RootNavigator />
-          {Platform.OS !== 'web' ? <FlashMessage position="top" /> : null}
-        </ThemeProvider>
-      </QueryClientProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <StatusBar style="auto" />
+            <RootNavigator />
+            {Platform.OS !== 'web' ? <FlashMessage position="top" /> : null}
+          </ThemeProvider>
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
