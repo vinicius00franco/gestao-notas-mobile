@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {
   PanGestureHandler,
@@ -24,6 +24,7 @@ interface KanbanCardProps {
   onDrag: (x: number, y: number) => void;
   onDragEnd: () => void;
   isDragging: boolean;
+  debug?: boolean;
 }
 
 /**
@@ -47,8 +48,12 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   onDrag,
   onDragEnd,
   isDragging,
+  debug = false,
 }) => {
   const { colors, typography, shadows } = useTheme();
+  const containerRef = useRef<any>(null);
+  const debugSV = useSharedValue(debug);
+  React.useEffect(() => { debugSV.value = debug; }, [debug]);
   // Valores animados para controlar a aparência do card durante o arrasto
   const translateX = useSharedValue(0);  // Posição X do card
   const translateY = useSharedValue(0);  // Posição Y do card
@@ -79,10 +84,33 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
       opacity.value = withSpring(0.9);
       zIndex.value = 1000;  // Coloca o card na frente de tudo
       
-      // Obtém coordenadas absolutas do toque
-      const x = (event.nativeEvent as any).absoluteX ?? event.nativeEvent.x;
-      const y = (event.nativeEvent as any).absoluteY ?? event.nativeEvent.y;
-      runOnJS(onDragStart)(nota, columnIndex, index, x, y);
+      // Obtém coordenadas absolutas do toque se presentes, caso contrário
+      // executa medição do container (JS) para obter coordenadas em window.
+      const maybeX = (event.nativeEvent as any).absoluteX;
+      const maybeY = (event.nativeEvent as any).absoluteY;
+      if (maybeX !== undefined && maybeY !== undefined) {
+        if (debugSV.value) runOnJS((...args: any[]) => console.log('[KanbanCard] onLongPress', ...args))({ maybeX, maybeY });
+        runOnJS(onDragStart)(nota, columnIndex, index, maybeX, maybeY);
+      } else {
+        const localX = (event.nativeEvent as any).x;
+        const localY = (event.nativeEvent as any).y;
+        runOnJS((note: any, col: number, idxNote: number, lX: number, lY: number) => {
+          try {
+            const el = containerRef.current;
+            if (el && typeof el.measureInWindow === 'function') {
+              el.measureInWindow((mx: number, my: number) => {
+                if (debugSV.value) console.log('[KanbanCard] onLongPress measureInWindow', { mx, my });
+                onDragStart(note, col, idxNote, mx, my);
+              });
+            } else {
+              // Fallback: call with local coords
+              onDragStart(note, col, idxNote, lX, lY);
+            }
+          } catch (err) {
+            onDragStart(note, col, idxNote, lX, lY);
+          }
+        })(nota, columnIndex, index, localX, localY);
+      }
     }
   };
 
@@ -108,9 +136,16 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
       translateY.value = event.nativeEvent.translationY;
       
       // Calcula posição absoluta e notifica o board
-      const x = (event.nativeEvent as any).absoluteX ?? event.nativeEvent.translationX;
-      const y = (event.nativeEvent as any).absoluteY ?? event.nativeEvent.translationY;
-      runOnJS(onDrag)(x, y);
+      // absoluteX e absoluteY são as coordenadas na tela
+      const absoluteX = (event.nativeEvent as any).absoluteX;
+      const absoluteY = (event.nativeEvent as any).absoluteY;
+      
+      // Se absoluteX/Y não estiverem disponíveis, não podemos calcular
+      if (absoluteX !== undefined && absoluteY !== undefined) {
+        if (debugSV.value) runOnJS((...args: any[]) => console.log('[KanbanCard] pan active', ...args))({ absoluteX, absoluteY });
+        // Chamar a worklet onDrag diretamente (ambas são worklets)
+        onDrag(absoluteX, absoluteY);
+      }
     } else if (state === State.END || state === State.CANCELLED || state === State.FAILED) {
       // Fim do arrasto: restaura estado original
       if (!isDraggingRef.value) {
@@ -122,6 +157,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
       translateX.value = withSpring(0);
       translateY.value = withSpring(0);
       isDraggingRef.value = false;
+      if (debugSV.value) runOnJS((...args: any[]) => console.log('[KanbanCard] pan end', ...args))({ note: nota.uuid });
       runOnJS(onDragEnd)();
     }
   };
@@ -151,7 +187,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
       maxDist={20}
       simultaneousHandlers={panRef}
     >
-      <Animated.View style={[styles.container, animatedStyle]}>
+      <Animated.View ref={containerRef} style={[styles.container, animatedStyle]}>
         <PanGestureHandler
           ref={panRef}
           onGestureEvent={panHandler}

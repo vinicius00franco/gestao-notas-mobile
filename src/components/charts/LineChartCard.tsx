@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, Text, StyleSheet, View } from 'react-native';
 import { Card } from '@/components/ui';
 import { useTheme } from '@/theme/ThemeProvider';
 
@@ -35,6 +35,43 @@ export default function LineChartCard({ title = 'Average of Sales by month', dat
 
   const chartData = useMemo(() => data, [data]);
 
+  const styles = StyleSheet.create({
+    fallbackContainer: {
+      height,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 16,
+    },
+    fallbackText: {
+      ...theme.typography.body,
+      color: theme.colors.onSurfaceVariant,
+      textAlign: 'center',
+    },
+    dataList: {
+      marginTop: 12,
+      width: '100%',
+    },
+    dataRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 4,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.outlineVariant,
+    },
+    dataLabel: {
+      ...theme.typography.caption,
+      color: theme.colors.text,
+      flex: 1,
+    },
+    dataValue: {
+      ...theme.typography.caption,
+      color: theme.colors.primary,
+      fontWeight: 'bold',
+      textAlign: 'right',
+      flex: 1,
+    },
+  });
+
   return (
     <Card title={title}>
       {VictoryChart && VictoryLine && VictoryAxis && VictoryGroup && VictoryArea ? (
@@ -47,7 +84,19 @@ export default function LineChartCard({ title = 'Average of Sales by month', dat
           </VictoryGroup>
         </VictoryChart>
       ) : (
-        <></>
+        <View style={styles.fallbackContainer}>
+          <Text style={styles.fallbackText}>
+            📈 Tendência de Valores Mensais
+          </Text>
+          <View style={styles.dataList}>
+            {chartData.map((point, index) => (
+              <View key={index} style={styles.dataRow}>
+                <Text style={styles.dataLabel}>{point.x}</Text>
+                <Text style={styles.dataValue}>R$ {point.y.toLocaleString('pt-BR')}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
       )}
     </Card>
   );

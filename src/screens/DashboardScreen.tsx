@@ -2,14 +2,13 @@ import { ActivityIndicator, StyleSheet, Text, View, ScrollView } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDashboard } from '../hooks/api';
 import { useTheme } from '../theme/ThemeProvider';
-import Card from '@/components/ui/Card';
 import HorizontalScrollCards from '@/components/ui/HorizontalScrollCards';
 import AlertCard from '@/components/ui/AlertCard';
 import RecentNFCard from '@/components/nota-fiscal/RecentNFCard';
 import FornecedorCard from '@/components/company/FornecedorCard';
-import KPICard from '@/components/dashboard/KPICard';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardFilterBar from '@/components/dashboard/DashboardFilterBar';
+import { DashboardSummary } from '@/components/dashboard';
 
 import { useState } from 'react';
 
@@ -24,9 +23,6 @@ export default function DashboardScreen() {
     errorContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     errorText: { ...theme.typography.h2, color: theme.colors.error },
     scrollContainer: { flex: 1 },
-    section: { marginVertical: 8 },
-    sectionTitle: { ...theme.typography.h2, marginHorizontal: 16, marginBottom: 8, color: theme.colors.text },
-    kpisContainer: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16 },
   });
 
   if (isLoading) {
@@ -51,16 +47,7 @@ export default function DashboardScreen() {
       <ScrollView style={styles.scrollContainer}>
         <DashboardFilterBar filters={filters} onFilterChange={setFilters} />
 
-        {/* KPIs */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Resumos</Text>
-          <View style={styles.kpisContainer}>
-            <KPICard label="NF Emitidas" value={data.kpis.nf_emitidas} />
-            <KPICard label="NF Recebidas" value={data.kpis.nf_recebidas} />
-            <KPICard label="Valor Total NF Saída" value={`R$ ${(data.kpis.valor_total_saida / 1000).toFixed(0)}K`} />
-            <KPICard label="Impostos Retidos" value={`R$ ${(data.kpis.impostos_retidos / 1000).toFixed(0)}K`} />
-          </View>
-        </View>
+        <DashboardSummary data={data} />
 
         {/* Alerts */}
         <HorizontalScrollCards title="Alertas Fiscais">

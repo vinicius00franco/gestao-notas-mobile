@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useSharedValue } from 'react-native-reanimated';
 import { View, Text, StyleSheet, FlatList, NativeSyntheticEvent, LayoutChangeEvent } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { NotaFiscal } from '@/types';
@@ -15,9 +16,8 @@ interface KanbanColumnProps {
   onDrag: (x: number, y: number) => void;
   onDragEnd: () => void;
   draggingItem: { nota: NotaFiscal; columnIndex: number; itemIndex: number } | null;
-  dragPosition: { x: number; y: number } | null;
-  itemLayouts: Array<{ y: number; height: number }>;
   onItemLayout: (index: number, y: number, height: number) => void;
+  debug?: boolean;
 }
 
 const KanbanColumn: React.FC<KanbanColumnProps> = ({
@@ -27,10 +27,11 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
   onDrag,
   onDragEnd,
   draggingItem,
-  dragPosition,
-  itemLayouts,
   onItemLayout,
+  debug = false,
 }) => {
+  const debugSV = useSharedValue(debug);
+  React.useEffect(() => { debugSV.value = debug; }, [debug]);
   const { colors, typography } = useTheme();
   const columnLayoutRef = useRef<{ y: number; height: number } | null>(null);
 
@@ -62,6 +63,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
           onDrag={onDrag}
           onDragEnd={onDragEnd}
           isDragging={isDraggingThisItem}
+          debug={debug}
         />
       </View>
     );
