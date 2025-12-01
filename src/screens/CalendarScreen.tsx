@@ -7,6 +7,7 @@ import { useCalendarDia, useCalendarResumo, useContasAPagar, useContasAReceber }
 import { Lancamento } from '../types';
 import LancamentoCalendarItem from '@/components/lancamento/LancamentoCalendarItem';
 import LancamentoMesItem from '@/components/lancamento/LancamentoMesItem';
+import { formatCurrencyBRL } from '@/utils/format';
 
 LocaleConfig.locales['pt-br'] = {
   monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -55,6 +56,16 @@ const CalendarScreen = () => {
 
     return marks;
   }, [resumoData, selectedDate, colors]);
+
+  // Mapa de saldo por dia para renderização no calendário
+  const saldoPorDia = useMemo(() => {
+    const map: Record<string, number> = {};
+    resumoData?.dias.forEach((d) => {
+      const saldo = (d.valor_receber ?? 0) - (d.valor_pagar ?? 0);
+      map[d.data] = saldo;
+    });
+    return map;
+  }, [resumoData]);
 
   const calendarTheme = useMemo(() => ({
     calendarBackground: colors.background,
@@ -108,6 +119,27 @@ const CalendarScreen = () => {
           onMonthChange={onMonthChange}
           markedDates={markedDates}
           theme={calendarTheme as any}
+          dayComponent={({ date, state }) => {
+            const y = date?.year;
+            const m = String(date?.month).padStart(2, '0');
+            const d = String(date?.day).padStart(2, '0');
+            const key = `${y}-${m}-${d}`;
+            const saldo = saldoPorDia[key];
+
+            const dayColor = state === 'disabled' ? colors.border : colors.text;
+            const saldoColor = saldo >= 0 ? colors.primary : colors.error;
+
+            return (
+              <View style={{ alignItems: 'center', paddingVertical: 4 }}>
+                <Text style={{ color: dayColor }}>{date?.day}</Text>
+                {saldo !== undefined && (
+                  <Text style={{ color: saldoColor, fontSize: 10, fontWeight: '600' }} numberOfLines={1}>
+                    {new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(saldo)}
+                  </Text>
+                )}
+              </View>
+            );
+          }}
           enableSwipeMonths
           firstDay={1}
         />
