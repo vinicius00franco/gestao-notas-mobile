@@ -5,7 +5,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useEffect } from 'react';
-import { TouchableOpacity, useColorScheme } from 'react-native';
+import { TouchableOpacity, useColorScheme, Platform, View, Text } from 'react-native';
 import { useGlobalStore } from '../store/global';
 
 import CustomDrawerContent from '@/components/navigation/CustomDrawerContent';
@@ -164,18 +164,22 @@ export default function RootNavigator() {
   useEffect(() => {
     async function prepare() {
       try {
-        await SplashScreen.preventAutoHideAsync();
+        // On web, SplashScreen from expo may behave differently; avoid blocking initial render.
+        if (Platform.OS !== 'web') {
+          await SplashScreen.preventAutoHideAsync();
+        }
       } catch (e) {
         console.warn(e);
       }
     }
-
     prepare();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (isDBReady) {
-      await SplashScreen.hideAsync();
+      if (Platform.OS !== 'web') {
+        await SplashScreen.hideAsync();
+      }
     }
   }, [isDBReady]);
 
@@ -192,7 +196,15 @@ export default function RootNavigator() {
   };
 
   if (!isDBReady) {
-    // Render a visible fallback while waiting DB init to avoid a blank page
+    // Visible fallback while waiting DB init.
+    // Use simplified fallback on web to ensure something renders even if splash handling misbehaves.
+    if (Platform.OS === 'web') {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text>Carregando dados (web)...</Text>
+        </View>
+      );
+    }
     return <Splash />;
   }
 

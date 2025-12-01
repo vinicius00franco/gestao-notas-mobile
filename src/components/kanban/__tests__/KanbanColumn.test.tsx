@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import KanbanColumn from '../KanbanColumn';
-import { NotaFiscal } from '../../types';
+import { NotaFiscal } from '@/types';
 
 // Mock do tema
 jest.mock('@/theme/ThemeProvider', () => ({
@@ -71,8 +71,12 @@ describe('KanbanColumn', () => {
     render(
       <KanbanColumn
         column={mockColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -83,8 +87,12 @@ describe('KanbanColumn', () => {
     render(
       <KanbanColumn
         column={mockColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -95,8 +103,12 @@ describe('KanbanColumn', () => {
     render(
       <KanbanColumn
         column={mockColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -110,8 +122,12 @@ describe('KanbanColumn', () => {
     render(
       <KanbanColumn
         column={emptyColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -123,8 +139,12 @@ describe('KanbanColumn', () => {
     render(
       <KanbanColumn
         column={mockColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -136,8 +156,12 @@ describe('KanbanColumn', () => {
     const { toJSON } = render(
       <KanbanColumn
         column={mockColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 
@@ -150,8 +174,12 @@ describe('KanbanColumn', () => {
     const { toJSON } = render(
       <KanbanColumn
         column={emptyColumn}
+        columnIndex={0}
         onDragStart={mockOnDragStart}
+        onDrag={jest.fn()}
         onDragEnd={mockOnDragEnd}
+        draggingItem={null}
+        onItemLayout={jest.fn()}
       />
     );
 

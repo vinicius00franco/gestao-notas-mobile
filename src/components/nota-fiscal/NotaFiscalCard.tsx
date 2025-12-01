@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { NotaFiscal } from '../types';
+import { NotaFiscal } from '@/types';
 import { useTheme } from '@/theme/ThemeProvider';
 
 interface NotaFiscalCardProps {

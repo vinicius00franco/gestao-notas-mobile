@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useTheme } from '@/theme/ThemeProvider';
 import { NotaFiscal } from '@/types';
-import { ListItem } from '@/components/ui';
 import { formatCurrencyBRL } from '@/utils/format';
 import NotaFiscalActionButtons from './NotaFiscalActionButtons';
 
@@ -22,12 +21,20 @@ const NotaFiscalListItem: React.FC<NotaFiscalListItemProps> = ({
   const { colors } = useTheme();
 
   return (
-    <ListItem
-      title={nota.numero}
-      subtitle={`${nota.parceiro?.nome ?? ''} • ${nota.parceiro?.cnpj ?? ''}`}
-      right={
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-          <Text style={{ color: colors.text }}>{formatCurrencyBRL(nota.valor_total)}</Text>
+    <View style={{ padding: 16, borderBottomWidth: 1, borderColor: colors.border }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <View style={{ flex: 1, marginRight: 16 }}>
+          <Text style={{ fontSize: 16, fontWeight: '600', color: colors.text, marginBottom: 4 }}>
+            {nota.numero}
+          </Text>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
+            {formatCurrencyBRL(nota.valor_total)}
+          </Text>
+          <Text style={{ fontSize: 14, color: colors.placeholder }}>
+            {nota.parceiro?.nome ?? ''} • {nota.parceiro?.cnpj ?? ''}
+          </Text>
+        </View>
+        <View style={{ alignItems: 'center' }}>
           <NotaFiscalActionButtons
             nota={nota}
             onView={onView}
@@ -35,8 +42,8 @@ const NotaFiscalListItem: React.FC<NotaFiscalListItemProps> = ({
             isDeleting={isDeleting}
           />
         </View>
-      }
-    />
+      </View>
+    </View>
   );
 };
 

@@ -34,7 +34,7 @@ const NotaFiscalActionButtons: React.FC<NotaFiscalActionButtonsProps> = ({
   };
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+    <View style={{ flexDirection: 'column', alignItems: 'center', gap: 8 }}>
       <TouchableOpacity
         style={{
           backgroundColor: colors.primary,
@@ -43,6 +43,7 @@ const NotaFiscalActionButtons: React.FC<NotaFiscalActionButtonsProps> = ({
           borderRadius: 8,
           alignItems: 'center',
           justifyContent: 'center',
+          minWidth: 80,
         }}
         onPress={() => onView(nota)}
         activeOpacity={0.7}>
@@ -58,6 +59,7 @@ const NotaFiscalActionButtons: React.FC<NotaFiscalActionButtonsProps> = ({
           borderRadius: 8,
           alignItems: 'center',
           justifyContent: 'center',
+          minWidth: 80,
           opacity: isDeleting ? 0.6 : 1,
         }}
         onPress={handleDelete}

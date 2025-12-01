@@ -8,7 +8,7 @@ import RecentNFCard from '@/components/nota-fiscal/RecentNFCard';
 import FornecedorCard from '@/components/company/FornecedorCard';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardFilterBar from '@/components/dashboard/DashboardFilterBar';
-import { DashboardSummary } from '@/components/dashboard';
+// import { DashboardSummary } from '@/components/dashboard';
 
 import { useState } from 'react';
 
@@ -47,7 +47,7 @@ export default function DashboardScreen() {
       <ScrollView style={styles.scrollContainer}>
         <DashboardFilterBar filters={filters} onFilterChange={setFilters} />
 
-        <DashboardSummary data={data} />
+        {/* <DashboardSummary data={data} /> */}
 
         {/* Alerts */}
         <HorizontalScrollCards title="Alertas Fiscais">

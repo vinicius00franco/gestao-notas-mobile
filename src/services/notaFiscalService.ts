@@ -1,5 +1,5 @@
 import { api } from '../api/client';
-import { NotaFiscal, Classificacao } from '../types';
+import { NotaFiscal, Classificacao } from '@/types';
 import { endpoints } from '../api/endpoints';
 
 export async function getNotasFiscais(): Promise<NotaFiscal[]> {
@@ -12,11 +12,22 @@ export async function getClassificacoes(): Promise<Classificacao[]> {
     return response.data;
 }
 
-export async function updateNotaFiscalClassificacao(notaId: string, classificacaoId: string): Promise<NotaFiscal> {
-    const response = await api.patch(`${endpoints.notasFiscais}${notaId}/`, { classificacao_id: classificacaoId });
+export async function deleteNotaFiscal(notaId: string): Promise<void> {
+    await api.delete(`${endpoints.notasFiscais}${notaId}/`);
+}
+
+export async function createClassificacao(nome: string, icone?: string): Promise<Classificacao> {
+    const response = await api.post('/classificacoes/', { nome, icone });
     return response.data;
 }
 
-export async function deleteNotaFiscal(notaId: string): Promise<void> {
-    await api.delete(`${endpoints.notasFiscais}${notaId}/`);
+export async function updateNotaFiscalClassificacao(
+    notaId: string,
+    classificacaoId: string
+): Promise<NotaFiscal> {
+    const response = await api.patch(
+        `${endpoints.notasFiscais}${notaId}/`,
+        { classificacao_id: classificacaoId }
+    );
+    return response.data;
 }

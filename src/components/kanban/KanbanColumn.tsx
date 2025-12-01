@@ -35,7 +35,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
   const { colors, typography } = useTheme();
   const columnLayoutRef = useRef<{ y: number; height: number } | null>(null);
 
-  const handleColumnLayout = (e: NativeSyntheticEvent<LayoutChangeEvent>) => {
+  const handleColumnLayout = (e: LayoutChangeEvent) => {
     const { y, height } = e.nativeEvent.layout;
     columnLayoutRef.current = { y, height };
   };
@@ -62,7 +62,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
           onDragStart={onDragStart}
           onDrag={onDrag}
           onDragEnd={onDragEnd}
-          isDragging={isDraggingThisItem}
+          isDragging={!!isDraggingThisItem}
           debug={debug}
         />
       </View>
@@ -91,8 +91,6 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         scrollEnabled={!draggingItem}
-        simultaneousHandlers={[]}
-        waitFor={draggingItem ? undefined : []}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={[typography.caption, { color: colors.placeholder }]}>Nenhuma nota fiscal</Text>

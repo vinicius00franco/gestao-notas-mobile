@@ -5,6 +5,7 @@ export const colors = {
   secondaryVariant: '#63783D',
   background: '#ffffff',
   surface: '#99CD85',        // Verde principal - usado nos cards
+  surfaceVariant: '#CFE0BC', // Verde claro para variantes
   error: '#b00020',
   onPrimary: '#000000',
   onSecondary: '#000000',
@@ -18,4 +19,5 @@ export const colors = {
   primaryContainer: '#e0d6ff',
   onSurfaceVariant: '#49454f',
   outline: '#79747e',
+  outlineVariant: '#a9a9a9', // Cinza médio para outlines
 };

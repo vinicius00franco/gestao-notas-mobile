@@ -216,12 +216,35 @@ export function useDeleteJob() {
   });
 }
 
-export function useClassifyCompany() {
+export function useCreateClassificacao() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (company: UnclassifiedCompany) => UnclassifiedCompaniesService.updateUnclassifiedCompany(company),
+    mutationFn: ({ nome, icone }: { nome: string; icone?: string }) =>
+      NotaFiscalService.createClassificacao(nome, icone),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: queryKeys.classificacoes });
+    },
+  });
+}
+
+export function useClassifyCompany() {
+  const qc = useQueryClient();
+  const nav = useNavigation<any>();
+  return useMutation({
+    mutationFn: UnclassifiedCompaniesService.updateUnclassifiedCompany,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: queryKeys.unclassifiedCompanies });
+      showMessage({
+        message: 'Empresa classificada com sucesso!',
+        type: 'success',
+      });
+      nav.goBack();
+    },
+    onError: (error: any) => {
+      showMessage({
+        message: error.response?.data?.detail || 'Erro ao classificar empresa',
+        type: 'danger',
+      });
     },
   });
 }

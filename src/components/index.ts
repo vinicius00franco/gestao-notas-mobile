@@ -10,3 +10,4 @@ export * as lancamento from './lancamento';
 export * as account from './account';
 export * as splash from './splash';
 export * as navigation from './navigation';
+export * as classificacao from './classificacao';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
-import { JobStatus } from '../types';
+import { JobStatus } from '@/types';
 
 interface JobActionButtonsProps {
   item: JobStatus;

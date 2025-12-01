@@ -144,11 +144,10 @@ export const MockCalendarService = {
 
 // Mock data for Notas Fiscais and Classificações
 const mockClassificacoesDB: Classificacao[] = [
-  { id: '1', nome: 'Alimentos' },
-  { id: '2', nome: 'Bebidas' },
-  { id: '3', nome: 'Limpeza' },
-  { id: '4', nome: 'Embalagens' },
-  { id: '5', nome: 'Equipamentos' },
+  { id: 'nao-classificado', nome: 'Não Classificado', icone: 'help-outline', isCustom: false },
+  { id: 'cliente', nome: 'Cliente', icone: 'person', isCustom: false },
+  { id: 'fornecedor', nome: 'Fornecedor', icone: 'business', isCustom: false },
+  // Custom classifications can be added here
 ];
 
 const mockNotasFiscaisDB: NotaFiscal[] = [];
@@ -172,7 +171,8 @@ const generateMockNotasFiscais = () => {
     .filter(job => job.status.codigo === 'CONCLUIDO' && job.numero_nota)
     .forEach((job, index) => {
       const fornecedor = fornecedores[index % fornecedores.length];
-      const classificacao = mockClassificacoesDB[index % mockClassificacoesDB.length];
+      // Use fornecedor classification for processed jobs
+      const classificacao = mockClassificacoesDB.find(c => c.id === 'fornecedor')!;
       const valor = Math.random() * 5000 + 500;
 
       mockNotasFiscaisDB.push({
@@ -195,7 +195,11 @@ const generateMockNotasFiscais = () => {
   // Add some additional notas fiscais that weren't processed yet
   for (let i = mockNotasFiscaisDB.length; i < 15; i++) {
     const fornecedor = fornecedores[i % fornecedores.length];
-    const classificacao = mockClassificacoesDB[i % mockClassificacoesDB.length];
+    // Mix of classifications for unprocessed notes
+    const classificacoesDisponiveis = mockClassificacoesDB.filter(c => c.id !== 'nao-classificado');
+    const classificacao = Math.random() > 0.3 
+      ? classificacoesDisponiveis[i % classificacoesDisponiveis.length] 
+      : mockClassificacoesDB.find(c => c.id === 'nao-classificado')!;
     const valor = Math.random() * 8000 + 1000;
 
     mockNotasFiscaisDB.push({
@@ -206,7 +210,7 @@ const generateMockNotasFiscais = () => {
       valor: valor,
       cnpj_emitente: fornecedor.cnpj,
       nome_emitente: fornecedor.nome,
-      classificacao_id: Math.random() > 0.3 ? classificacao.id : '', // Some unclassified
+      classificacao_id: classificacao.id,
       parceiro: {
         uuid: `parceiro-extra-${i}`,
         nome: fornecedor.nome,
@@ -233,6 +237,17 @@ export const MockNotaFiscalService = {
   getClassificacoes: async (): Promise<Classificacao[]> => {
     await mockDelay(300);
     return [...mockClassificacoesDB];
+  },
+  createClassificacao: async (nome: string, icone?: string): Promise<Classificacao> => {
+    await mockDelay(300);
+    const newClassificacao: Classificacao = {
+      id: uuidv4(),
+      nome,
+      icone: icone || 'label',
+      isCustom: true,
+    };
+    mockClassificacoesDB.push(newClassificacao);
+    return newClassificacao;
   },
   updateNotaFiscalClassificacao: async (notaId: string, classificacaoId: string): Promise<any> => {
     await mockDelay(300);

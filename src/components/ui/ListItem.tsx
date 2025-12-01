@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
 
-export function ListItem({ title, subtitle, right }: { title: string; subtitle?: string; right?: React.ReactNode }) {
+export function ListItem({ title, subtitle, right }: { title: string; subtitle?: string | React.ReactNode; right?: React.ReactNode }) {
   const theme = useTheme();
 
   const styles = StyleSheet.create({
@@ -30,7 +30,13 @@ export function ListItem({ title, subtitle, right }: { title: string; subtitle?:
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
-        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+        {subtitle && (
+          typeof subtitle === 'string' ? (
+            <Text style={styles.subtitle}>{subtitle}</Text>
+          ) : (
+            subtitle
+          )
+        )}
       </View>
       {right}
     </View>

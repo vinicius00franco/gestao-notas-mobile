@@ -52,7 +52,7 @@ export type NotaFiscal = {
   nome_emitente: string;
   classificacao_id: string;
   valor_total: string | number;
-  parceiro: {
+  parceiro?: {
     uuid: string;
     nome: string;
     cnpj: string;
@@ -62,6 +62,8 @@ export type NotaFiscal = {
 export type Classificacao = {
   id: string;
   nome: string;
+  icone?: string; // MaterialIcons name
+  isCustom?: boolean; // true for user-created classifications
 };
 
 // New dashboard types

@@ -56,7 +56,7 @@ const KanbanCardDrax: React.FC<KanbanCardDraxProps> = ({
           {formatCurrency(nota.valor_total)}
         </Text>
         <Text style={[typography.caption, { color: colors.onSurfaceVariant }]}>
-          {nota.parceiro.cnpj}
+          {nota.parceiro?.cnpj || 'N/A'}
         </Text>
       </DraxView>
     </View>

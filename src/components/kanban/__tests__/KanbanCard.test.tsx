@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import KanbanCard from '../KanbanCard';
-import { NotaFiscal } from '../../types';
+import { NotaFiscal } from '@/types';
 
 // Mock do tema
 jest.mock('@/theme/ThemeProvider', () => ({
@@ -56,9 +56,6 @@ const mockNotaFiscal: NotaFiscal = {
 };
 
 describe('KanbanCard', () => {
-  const mockOnPress = jest.fn();
-  const mockOnLongPress = jest.fn();
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -67,8 +64,12 @@ describe('KanbanCard', () => {
     render(
       <KanbanCard
         nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
+        index={0}
+        columnIndex={0}
+        onDragStart={jest.fn()}
+        onDrag={jest.fn()}
+        onDragEnd={jest.fn()}
+        isDragging={false}
       />
     );
 
@@ -77,44 +78,16 @@ describe('KanbanCard', () => {
     expect(screen.getByText('R$ 1.000,00')).toBeTruthy();
   });
 
-  it('deve chamar onPress quando pressionado', () => {
-    render(
-      <KanbanCard
-        nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
-      />
-    );
-
-    const card = screen.getByText('Empresa Teste Ltda').parent?.parent;
-    if (card) {
-      fireEvent.press(card);
-      expect(mockOnPress).toHaveBeenCalledWith(mockNotaFiscal);
-    }
-  });
-
-  it('deve chamar onLongPress quando pressionado longamente', () => {
-    render(
-      <KanbanCard
-        nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
-      />
-    );
-
-    const card = screen.getByText('Empresa Teste Ltda').parent?.parent;
-    if (card) {
-      fireEvent(card, 'onLongPress');
-      expect(mockOnLongPress).toHaveBeenCalledWith(mockNotaFiscal);
-    }
-  });
-
   it('deve aplicar estilos do tema corretamente', () => {
     render(
       <KanbanCard
         nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
+        index={0}
+        columnIndex={0}
+        onDragStart={jest.fn()}
+        onDrag={jest.fn()}
+        onDragEnd={jest.fn()}
+        isDragging={false}
       />
     );
 
@@ -126,8 +99,12 @@ describe('KanbanCard', () => {
     render(
       <KanbanCard
         nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
+        index={0}
+        columnIndex={0}
+        onDragStart={jest.fn()}
+        onDrag={jest.fn()}
+        onDragEnd={jest.fn()}
+        isDragging={false}
       />
     );
 
@@ -143,8 +120,12 @@ describe('KanbanCard', () => {
     render(
       <KanbanCard
         nota={notaComValorDiferente}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
+        index={0}
+        columnIndex={0}
+        onDragStart={jest.fn()}
+        onDrag={jest.fn()}
+        onDragEnd={jest.fn()}
+        isDragging={false}
       />
     );
 
@@ -155,8 +136,12 @@ describe('KanbanCard', () => {
     const { toJSON } = render(
       <KanbanCard
         nota={mockNotaFiscal}
-        onPress={mockOnPress}
-        onLongPress={mockOnLongPress}
+        index={0}
+        columnIndex={0}
+        onDragStart={jest.fn()}
+        onDrag={jest.fn()}
+        onDragEnd={jest.fn()}
+        isDragging={false}
       />
     );
 

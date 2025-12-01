@@ -18,7 +18,7 @@ const NotaFiscalInfo: React.FC<NotaFiscalInfoProps> = ({ nota }) => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.surface }]}>
+    <View style={[styles.container, { backgroundColor: colors.background, borderColor: colors.primary, borderWidth: 1 }]}>
       {renderField('UUID:', nota.uuid)}
       {renderField('Número:', nota.numero)}
       {renderField('Valor Total:', String(nota.valor_total))}
@@ -30,8 +30,11 @@ const NotaFiscalInfo: React.FC<NotaFiscalInfoProps> = ({ nota }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    gap: 12,
+    margin: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    gap: 16,
+    borderRadius: 8,
   },
   field: {
     marginBottom: 8,

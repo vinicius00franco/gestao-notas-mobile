@@ -30,15 +30,9 @@ const ClassifyNotasKanbanScreen = () => {
 
   useEffect(() => {
     if (notasFiscais && classificacoes) {
-      const unclassifiedId = 'unclassified';
-      const allClassificacoes = [
-        { id: unclassifiedId, nome: 'Não Classificado' },
-        ...classificacoes,
-      ];
-
-      const groupedData = allClassificacoes.map(c => ({
+      const groupedData = classificacoes.map(c => ({
         ...c,
-        notas: notasFiscais.filter((n: NotaFiscal) => ((n as any).classificacao_id || unclassifiedId) === c.id),
+        notas: notasFiscais.filter((n: NotaFiscal) => ((n as any).classificacao_id || 'nao-classificado') === c.id),
       }));
       setData(groupedData);
     }
