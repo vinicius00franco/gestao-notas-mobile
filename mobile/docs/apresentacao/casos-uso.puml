@@ -1,0 +1,49 @@
+@startuml CasosDeUso
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam RoundCorner 20
+skinparam ArrowColor #5b8def
+skinparam actorStyle awesome
+skinparam actor {
+  BackgroundColor #f0f7ff
+  BorderColor #5b8def
+  FontColor #0a2a66
+}
+skinparam usecase {
+  BackgroundColor #ffffff
+  BorderColor #6fa56f
+  FontColor #1f3d1f
+}
+
+title Casos de Uso - Gestão de Notas
+
+actor "Usuário" as Usuario
+rectangle "App Gestão de Notas" {
+  usecase "Visualizar Dashboard" as UC1
+  usecase "Listar Notas Fiscais" as UC2
+  usecase "Ver Detalhes da Nota" as UC3
+  usecase "Excluir Nota" as UC4
+  usecase "Classificar Notas - Kanban" as UC5
+  usecase "Visualizar Calendário" as UC6
+  usecase "Upload de Nota Fiscal" as UC7
+}
+
+Usuario --> UC1
+Usuario --> UC2
+UC2 --> UC3
+UC3 --> UC4
+Usuario --> UC5
+Usuario --> UC6
+Usuario --> UC7
+
+actor "Sistema de Notificações" as Notif
+legend right
+Integração com Notificações
+endlegend
+Usuario -> UC1 : Ajusta filtros
+UC1 -> Notif : Agenda/Atualiza alertas
+Notif -> Usuario : Push de alerta
+Usuario -> UC3 : Abre detalhe via alerta
+UC3 -> Usuario : Exibe detalhes/ações
+
+@enduml

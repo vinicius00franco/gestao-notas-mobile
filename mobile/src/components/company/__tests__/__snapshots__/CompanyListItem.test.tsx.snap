@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CompanyListItem matches snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "borderBottomColor": "#cccccc",
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "padding": 12,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "flex": 1,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#333333",
+            "fontSize": 16,
+          },
+          {
+            "color": "#333333",
+            "fontWeight": "600",
+            "marginBottom": 4,
+          },
+        ]
+      }
+    >
+      Empresa XYZ
+    </Text>
+    <Text
+      style={
+        [
+          {
+            "color": "#a9a9a9",
+            "fontSize": 12,
+          },
+          {
+            "color": "#a9a9a9",
+          },
+        ]
+      }
+    >
+      12.345.678/0001-99
+    </Text>
+  </View>
+  <View
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#99CD85",
+        "borderRadius": 8,
+        "justifyContent": "center",
+        "marginTop": 8,
+        "opacity": 1,
+        "paddingHorizontal": 16,
+        "paddingVertical": 12,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#FFFFFF",
+          "fontSize": 16,
+          "fontWeight": "600",
+        }
+      }
+    >
+      Classificar
+    </Text>
+  </View>
+</View>
+`;

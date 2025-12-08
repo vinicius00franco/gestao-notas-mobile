@@ -1,0 +1,9 @@
+{
+  "top_5_fornecedores_pendentes": [
+    { "nome": "Hortifruti São João", "cnpj": "12.345.678/0001-90", "total_a_pagar": 2850.75 },
+    { "nome": "Verduras do Campo", "cnpj": "23.456.789/0001-01", "total_a_pagar": 1920.40 },
+    { "nome": "CEAGESP - Mercado Livre", "cnpj": "34.567.890/0001-12", "total_a_pagar": 1580.25 },
+    { "nome": "Embalagens Silva", "cnpj": "45.678.901/0001-23", "total_a_pagar": 890.50 },
+    { "nome": "Transportadora Verde", "cnpj": "56.789.012/0001-34", "total_a_pagar": 650.00 }
+  ]
+}

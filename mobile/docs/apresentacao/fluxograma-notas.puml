@@ -1,0 +1,22 @@
+@startuml Fluxo_Notas
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+
+start
+:Abrir Lista de Notas;
+:Visualizar Itens;
+if (Ação por Item?) then (Ver)
+  :Abrir Detalhes da Nota;
+  :Voltar à Lista;
+else (Excluir)
+  :Confirmar Exclusão;
+  if (Confirmado?) then (Sim)
+    :Remover Nota;
+  else (Não)
+    :Cancelar;
+  endif
+endif
+stop
+@enduml

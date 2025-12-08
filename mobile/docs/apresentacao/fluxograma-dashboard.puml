@@ -1,0 +1,24 @@
+@startuml Fluxo_Dashboard
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+
+start
+:Carregar Dashboard;
+:Aplicar Filtros;
+if (Escolher Seção?) then (Notas Recentes)
+  :Ir para Detalhes de Nota;
+  :Voltar ao Dashboard;
+elseif (Pagar) then (Pagar)
+  :Abrir Tela de Contas a Pagar;
+  :Voltar ao Dashboard;
+elseif (Receber) then (Receber)
+  :Abrir Tela de Contas a Receber;
+  :Voltar ao Dashboard;
+else (Upload)
+  :Abrir Tela de Upload;
+  :Voltar ao Dashboard;
+endif
+stop
+@enduml

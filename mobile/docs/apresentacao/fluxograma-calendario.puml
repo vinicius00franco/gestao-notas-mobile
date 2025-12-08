@@ -1,0 +1,60 @@
+@startuml Fluxo_Calendario
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Calendário e Classificação de Notas
+
+start
+:Abrir Calendário;
+:Selecionar Mês;
+:Visualizar Totais por Dia;
+:Ver Lista do Mês;
+partition "Lista de Itens" {
+	:Exibir cartões (incl. Não Classificados);
+	:Mostrar contador de Não Classificados;
+}
+
+:Usuário seleciona cartão "Não Classificado";
+if (Ação do usuário?) then (Mover)
+	:Abrir diálogo de destino;
+	if (Selecionar coluna existente?) then (Sim)
+		:Selecionar coluna (Cliente/Fornecedor/Outra);
+		:Atualizar cartão -> nova coluna;
+		:Atualizar contadores das colunas;
+	else (Criar nova coluna)
+		:Informar nome da nova coluna;
+		:Criar coluna;
+		:Mover cartão para nova coluna;
+		:Atualizar contadores;
+	endif
+elseif (Criar coluna)
+	:Informar nome da nova coluna;
+	:Criar coluna vazia;
+	:Atualizar UI;
+elseif (Excluir coluna)
+	:Selecionar coluna para excluir;
+	:Confirmar exclusão? -->
+	if (Confirmado?) then (Sim)
+		:Mover itens da coluna para "Não Classificados" ou escolher destino;
+		:Remover coluna;
+		:Atualizar contadores;
+	else (Cancelar)
+		:Voltar;
+	endif
+else (Visualizar)
+	:Abrir detalhe do cartão;
+	:Voltar para lista;
+endif
+
+:Salvar alterações e sincronizar com backend;
+:Exibir mensagem de confirmação;
+stop
+
+note right
+Regras principais:
+- Ao criar coluna, permitir tipo: Cliente/Fornecedor/Outro
+- Ao excluir coluna, obrigar destino dos itens (reclassificar)
+end note
+
+@enduml

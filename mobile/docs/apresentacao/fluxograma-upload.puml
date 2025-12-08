@@ -1,0 +1,18 @@
+@startuml Fluxo_Upload
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+
+start
+:Abrir Upload;
+:Escolher Arquivo;
+:Informar CNPJ opcional;
+:Processar Nota;
+if (Resultado?) then (Sucesso)
+  :Confirmar / Navegar;
+else (Falha)
+  :Exibir Mensagem / Tentar novamente;
+endif
+stop
+@enduml

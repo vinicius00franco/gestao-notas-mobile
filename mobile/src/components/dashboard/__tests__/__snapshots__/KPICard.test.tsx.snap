@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`KPICard matches snapshot 1`] = `
+<View
+  style={
+    [
+      {
+        "borderRadius": 8,
+        "borderWidth": 1,
+        "flex": 1,
+        "margin": 4,
+        "minWidth": "45%",
+        "padding": 16,
+      },
+      {
+        "backgroundColor": "#99CD85",
+        "borderColor": "#cccccc",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 24,
+          "fontWeight": "bold",
+          "marginBottom": 8,
+        },
+        {
+          "color": "#333333",
+        },
+      ]
+    }
+  >
+    150
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontSize": 14,
+        },
+        {
+          "color": "#333333",
+        },
+      ]
+    }
+  >
+    NF Emitidas
+  </Text>
+</View>
+`;

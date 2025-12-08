@@ -1,0 +1,19 @@
+@startuml Fluxo_Classificar
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+
+start
+:Abrir Classificação;
+:Carregar Colunas;
+:Arrastar Cartão entre Colunas;
+if (Validação de Layout) then (OK)
+  :Atualizar Estado;
+  :Prosseguir / Salvar;
+else (Erro ref.measureLayout)
+  :Exibir Aviso;
+  :Recarregar Colunas;
+endif
+stop
+@enduml

@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`MainButton matches snapshot 1`] = `
+<View
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "#99CD85",
+      "borderRadius": 30,
+      "elevation": 4,
+      "marginBottom": 32,
+      "opacity": 1,
+      "paddingHorizontal": 32,
+      "paddingVertical": 16,
+      "shadowColor": "#333333",
+      "shadowOffset": {
+        "height": 4,
+        "width": 0,
+      },
+      "shadowOpacity": 0.2,
+      "shadowRadius": 8,
+      "width": "100%",
+    }
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "fontWeight": "bold",
+        },
+        {
+          "color": "#333333",
+          "fontSize": 24,
+          "fontWeight": "bold",
+        },
+        {
+          "color": "#000000",
+        },
+      ]
+    }
+  >
+    Entrar no App
+  </Text>
+</View>
+`;

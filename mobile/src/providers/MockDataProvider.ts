@@ -1,0 +1,267 @@
+import { JobStatus, PaginatedResponse, TopFornecedor, Lancamento, DashboardData } from '../types';
+import { mockJobsDB, createMockJob, extractMockNotaData, STATUS_OPTIONS, createMockDashboardData, mockLancamentosDB } from '../data/mockData';
+import { AxiosResponse } from 'axios';
+import { CalendarDiaResponse, CalendarResumoResponse, CalendarResumoDia, CalendarDiaItem } from '../api/services/calendarService';
+import { NotaFiscal, Classificacao } from '../types';
+import { v4 as uuidv4 } from 'uuid';
+
+const mockDelay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+const simulateJobProcessing = (jobUuid: string) => {
+  setTimeout(() => {
+    const jobIndex = mockJobsDB.findIndex(j => j.uuid === jobUuid);
+    if (jobIndex === -1) return;
+    mockJobsDB[jobIndex].status = STATUS_OPTIONS.PROCESSANDO;
+
+    setTimeout(() => {
+      const extractionResult = extractMockNotaData();
+      const finalJobIndex = mockJobsDB.findIndex(j => j.uuid === jobUuid);
+      if (finalJobIndex === -1) return;
+
+      if (extractionResult.success) {
+        mockJobsDB[finalJobIndex].status = STATUS_OPTIONS.CONCLUIDO;
+        mockJobsDB[finalJobIndex].numero_nota = extractionResult.numero;
+      } else {
+        mockJobsDB[finalJobIndex].status = STATUS_OPTIONS.ERRO;
+        mockJobsDB[finalJobIndex].erro = extractionResult.error;
+      }
+      mockJobsDB[finalJobIndex].dt_conclusao = new Date().toISOString();
+    }, 2000 + Math.random() * 3000);
+  }, 1000 + Math.random() * 2000);
+};
+
+// --- Mock Service Implementations ---
+
+export const MockJobService = {
+  listJobs: async (): Promise<JobStatus[]> => {
+    await mockDelay(300);
+    return [...mockJobsDB].reverse();
+  },
+  listJobsPendentes: async (params: { page: number }): Promise<PaginatedResponse<JobStatus>> => {
+    await mockDelay(300);
+    const pendentes = mockJobsDB.filter(j => j.status.codigo === 'PENDENTE');
+    return { results: pendentes, next: null, previous: null, count: pendentes.length };
+  },
+  listJobsConcluidos: async (params: { page: number }): Promise<PaginatedResponse<JobStatus>> => {
+    await mockDelay(300);
+    const concluidos = mockJobsDB.filter(j => j.status.codigo === 'CONCLUIDO');
+    return { results: concluidos, next: null, previous: null, count: concluidos.length };
+  },
+  listJobsErros: async (params: { page: number }): Promise<PaginatedResponse<JobStatus>> => {
+    await mockDelay(300);
+    const erros = mockJobsDB.filter(j => j.status.codigo === 'ERRO');
+    return { results: erros, next: null, previous: null, count: erros.length };
+  },
+  getJobStatus: async (uuid: string): Promise<JobStatus> => {
+    await mockDelay(300);
+    const job = mockJobsDB.find(j => j.uuid === uuid);
+    if (!job) throw new Error('Job não encontrado');
+    return job;
+  },
+  uploadNota: async (data: any): Promise<{ message: string; job_uuid: string; }> => {
+    await mockDelay(1000);
+    const newJob = createMockJob();
+    mockJobsDB.push(newJob);
+    simulateJobProcessing(newJob.uuid);
+    return { message: 'Nota enviada para processamento!', job_uuid: newJob.uuid };
+  },
+  deleteJob: async (uuid: string): Promise<AxiosResponse> => {
+    await mockDelay(500);
+    const index = mockJobsDB.findIndex(j => j.uuid === uuid);
+    if (index > -1) mockJobsDB.splice(index, 1);
+    return { data: { message: 'Job deletado com sucesso (mock)' } } as AxiosResponse;
+  },
+  reprocessJob: async (uuid: string): Promise<AxiosResponse> => {
+    await mockDelay(500);
+    const jobIndex = mockJobsDB.findIndex(j => j.uuid === uuid);
+    if (jobIndex > -1) {
+      mockJobsDB[jobIndex].status = STATUS_OPTIONS.PENDENTE;
+      mockJobsDB[jobIndex].erro = undefined;
+      mockJobsDB[jobIndex].dt_conclusao = undefined;
+      simulateJobProcessing(uuid);
+    }
+    return { data: { message: 'Job reenviado para processamento (mock)' } } as AxiosResponse;
+  },
+};
+
+export const MockDashboardService = {
+  getDashboard: async (): Promise<DashboardData> => {
+    await mockDelay(500);
+    const dashboardData = createMockDashboardData(mockJobsDB);
+    return dashboardData;
+  },
+};
+
+export const MockContasService = {
+  getContasAPagar: async (): Promise<Lancamento[]> => {
+    await mockDelay(300);
+    return mockLancamentosDB.filter(l => l.clf_tipo.nome === 'A Pagar');
+  },
+  getContasAReceber: async (): Promise<Lancamento[]> => {
+    await mockDelay(300);
+    return mockLancamentosDB.filter(l => l.clf_tipo.nome === 'A Receber');
+  },
+};
+
+export const MockCalendarService = {
+    getCalendarResumo: async (params: { ano: number, mes: number }): Promise<CalendarResumoResponse> => {
+        await mockDelay(400);
+        const saldosDiarios: { [dateString: string]: { pagar: number, receber: number } } = {};
+        mockLancamentosDB
+            .filter(l => {
+                const dataVenc = new Date(l.data_vencimento);
+                return dataVenc.getFullYear() === params.ano && dataVenc.getMonth() + 1 === params.mes;
+            })
+            .forEach(l => {
+                const dateString = l.data_vencimento;
+                if (!saldosDiarios[dateString]) saldosDiarios[dateString] = { pagar: 0, receber: 0 };
+                if (l.clf_tipo.nome === 'A Pagar') {
+                    saldosDiarios[dateString].pagar += l.valor;
+                } else {
+                    saldosDiarios[dateString].receber += l.valor;
+                }
+            });
+        const dias: CalendarResumoDia[] = Object.entries(saldosDiarios).map(([dateString, saldos]) => ({
+            data: dateString,
+            valor_pagar: saldos.pagar,
+            valor_receber: saldos.receber,
+        }));
+        return { ano: params.ano, mes: params.mes, dias };
+    },
+    getCalendarDia: async (data: string): Promise<CalendarDiaResponse> => {
+        await mockDelay(300);
+        const lancamentosDoDia = mockLancamentosDB.filter(l => l.data_vencimento === data);
+        const detalhes: CalendarDiaItem[] = lancamentosDoDia.map(l => ({
+            nome_fantasia: l.descricao,
+            cnpj: 'N/A', // Mock data doesn't have this
+            valor: l.valor,
+            data: l.data_vencimento,
+            tipo: l.clf_tipo.nome === 'A Pagar' ? 'PAGAR' : 'RECEBER',
+        }));
+        return { data, detalhes };
+    },
+};
+
+// Mock data for Notas Fiscais and Classificações
+const mockClassificacoesDB: Classificacao[] = [
+  { id: 'nao-classificado', nome: 'Não Classificado', icone: 'help-outline', isCustom: false },
+  { id: 'cliente', nome: 'Cliente', icone: 'person', isCustom: false },
+  { id: 'fornecedor', nome: 'Fornecedor', icone: 'business', isCustom: false },
+  // Custom classifications can be added here
+];
+
+const mockNotasFiscaisDB: NotaFiscal[] = [];
+
+// Generate mock notas fiscais based on processed jobs and dashboard data
+const generateMockNotasFiscais = () => {
+  if (mockNotasFiscaisDB.length > 0) return;
+
+  const fornecedores = [
+    { nome: 'Hortifruti São João', cnpj: '12.345.678/0001-90' },
+    { nome: 'Verduras do Campo', cnpj: '23.456.789/0001-01' },
+    { nome: 'CEAGESP - Mercado Livre', cnpj: '34.567.890/0001-12' },
+    { nome: 'Embalagens Silva', cnpj: '45.678.901/0001-23' },
+    { nome: 'Transportadora Verde', cnpj: '56.789.012/0001-34' },
+    { nome: 'Distribuidora ABC', cnpj: '67.890.123/0001-45' },
+    { nome: 'Comercial XYZ', cnpj: '78.901.234/0001-56' },
+  ];
+
+  // Create notas fiscais from processed jobs
+  mockJobsDB
+    .filter(job => job.status.codigo === 'CONCLUIDO' && job.numero_nota)
+    .forEach((job, index) => {
+      const fornecedor = fornecedores[index % fornecedores.length];
+      // Use fornecedor classification for processed jobs
+      const classificacao = mockClassificacoesDB.find(c => c.id === 'fornecedor')!;
+      const valor = Math.random() * 5000 + 500;
+
+      mockNotasFiscaisDB.push({
+        id: `nf-${job.uuid}`,
+        uuid: job.uuid,
+        numero: job.numero_nota || `NF-${1000 + index}`,
+        valor_total: valor,
+        valor: valor,
+        cnpj_emitente: fornecedor.cnpj,
+        nome_emitente: fornecedor.nome,
+        classificacao_id: classificacao.id,
+        parceiro: {
+          uuid: `parceiro-${index}`,
+          nome: fornecedor.nome,
+          cnpj: fornecedor.cnpj,
+        },
+      });
+    });
+
+  // Add some additional notas fiscais that weren't processed yet
+  for (let i = mockNotasFiscaisDB.length; i < 15; i++) {
+    const fornecedor = fornecedores[i % fornecedores.length];
+    // Mix of classifications for unprocessed notes
+    const classificacoesDisponiveis = mockClassificacoesDB.filter(c => c.id !== 'nao-classificado');
+    const classificacao = Math.random() > 0.3 
+      ? classificacoesDisponiveis[i % classificacoesDisponiveis.length] 
+      : mockClassificacoesDB.find(c => c.id === 'nao-classificado')!;
+    const valor = Math.random() * 8000 + 1000;
+
+    mockNotasFiscaisDB.push({
+      id: `nf-extra-${i}`,
+      uuid: uuidv4(),
+      numero: `NF-${2000 + i}`,
+      valor_total: valor,
+      valor: valor,
+      cnpj_emitente: fornecedor.cnpj,
+      nome_emitente: fornecedor.nome,
+      classificacao_id: classificacao.id,
+      parceiro: {
+        uuid: `parceiro-extra-${i}`,
+        nome: fornecedor.nome,
+        cnpj: fornecedor.cnpj,
+      },
+    });
+  }
+};
+
+// Initialize mock data
+generateMockNotasFiscais();
+
+// Stubs for other services
+export const MockUnclassifiedCompaniesService = {
+  getUnclassifiedCompanies: async (): Promise<any[]> => { await mockDelay(500); return []; },
+  updateUnclassifiedCompany: async (company: any): Promise<any> => { await mockDelay(500); return company; }
+};
+
+export const MockNotaFiscalService = {
+  getNotasFiscais: async (): Promise<NotaFiscal[]> => {
+    await mockDelay(500);
+    return [...mockNotasFiscaisDB];
+  },
+  getClassificacoes: async (): Promise<Classificacao[]> => {
+    await mockDelay(300);
+    return [...mockClassificacoesDB];
+  },
+  createClassificacao: async (nome: string, icone?: string): Promise<Classificacao> => {
+    await mockDelay(300);
+    const newClassificacao: Classificacao = {
+      id: uuidv4(),
+      nome,
+      icone: icone || 'label',
+      isCustom: true,
+    };
+    mockClassificacoesDB.push(newClassificacao);
+    return newClassificacao;
+  },
+  updateNotaFiscalClassificacao: async (notaId: string, classificacaoId: string): Promise<any> => {
+    await mockDelay(300);
+    const notaIndex = mockNotasFiscaisDB.findIndex(n => n.uuid === notaId);
+    if (notaIndex > -1) {
+      mockNotasFiscaisDB[notaIndex].classificacao_id = classificacaoId;
+    }
+    return { success: true };
+  },
+  deleteNotaFiscal: async (notaId: string): Promise<void> => {
+    await mockDelay(300);
+    const notaIndex = mockNotasFiscaisDB.findIndex(n => n.uuid === notaId);
+    if (notaIndex > -1) {
+      mockNotasFiscaisDB.splice(notaIndex, 1);
+    }
+  },
+};

@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`FormPicker matches snapshot 1`] = `
+<View
+  style={
+    {
+      "borderColor": "#ddd",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "marginBottom": 12,
+    }
+  }
+>
+  <RNCPicker
+    items={
+      [
+        {
+          "label": "Fornecedor",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "fornecedor",
+        },
+        {
+          "label": "Cliente",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "cliente",
+        },
+        {
+          "label": "Outra Empresa",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "outra_empresa",
+        },
+      ]
+    }
+    numberOfLines={1}
+    onChange={[Function]}
+    selectedIndex={0}
+    style={
+      [
+        {
+          "height": 216,
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;
+
+exports[`FormPicker matches snapshot with different selection 1`] = `
+<View
+  style={
+    {
+      "borderColor": "#ddd",
+      "borderRadius": 6,
+      "borderWidth": 1,
+      "marginBottom": 12,
+    }
+  }
+>
+  <RNCPicker
+    items={
+      [
+        {
+          "label": "Fornecedor",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "fornecedor",
+        },
+        {
+          "label": "Cliente",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "cliente",
+        },
+        {
+          "label": "Outra Empresa",
+          "testID": undefined,
+          "textColor": undefined,
+          "value": "outra_empresa",
+        },
+      ]
+    }
+    numberOfLines={1}
+    onChange={[Function]}
+    selectedIndex={1}
+    style={
+      [
+        {
+          "height": 216,
+        },
+        undefined,
+      ]
+    }
+  />
+</View>
+`;

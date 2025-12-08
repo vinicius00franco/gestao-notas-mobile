@@ -1,0 +1,16 @@
+export const endpoints = {
+  processarNota: '/api/processar-nota/',
+  jobStatus: (uuid: string) => `/api/jobs/${uuid}/`,
+  listJobs: '/api/jobs/',
+  listJobsPendentes: '/api/jobs/pendentes/',
+  listJobsConcluidos: '/api/jobs/concluidos/',
+  listJobsErros: '/api/jobs/erros/',
+  contasAPagar: '/api/contas-a-pagar/',
+  contasAReceber: '/api/contas-a-receber/',
+  dashboard: '/api/dashboard/',
+  calendarResumo: '/api/calendar-resumo/',
+  calendarDia: '/api/calendar-dia/',
+  notasFiscais: '/api/notas-fiscais/',
+  unclassifiedCompanies: '/api/unclassified-companies/',
+  updateUnclassifiedCompany: (id: string | number) => `/api/unclassified-companies/${id}/`,
+};

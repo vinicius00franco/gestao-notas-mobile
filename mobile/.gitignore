@@ -1,0 +1,11 @@
+node_modules
+.expo
+dist
+.expo-shared
+.DS_Store
+*.keystore
+*.jks
+
+.env*
+android
+.gradle-user-home

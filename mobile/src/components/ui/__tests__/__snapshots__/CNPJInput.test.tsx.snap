@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`CNPJInput matches snapshot 1`] = `
+<TextInput
+  keyboardType="numbers-and-punctuation"
+  onChangeText={[MockFunction]}
+  placeholder="CNPJ (opcional)"
+  placeholderTextColor="#a9a9a9"
+  style={
+    {
+      "borderColor": "#cccccc",
+      "borderRadius": 8,
+      "borderWidth": 1,
+      "color": "#333333",
+      "fontSize": 16,
+      "padding": 12,
+    }
+  }
+  value=""
+/>
+`;

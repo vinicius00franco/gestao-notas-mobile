@@ -1,0 +1,107 @@
+"""
+Arquivo índice com múltiplos diagramas. Abra também os arquivos
+individuais criados neste diretório para visualizar cada fluxo
+separadamente.
+"""
+
+@startuml Fluxo_Dashboard
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Dashboard
+start
+:Carregar Dashboard;
+:Aplicar Filtros;
+if (Escolher Seção?) then (Notas Recentes)
+  :Ir para Detalhes de Nota;
+  :Voltar ao Dashboard;
+elseif (Pagar) then (Pagar)
+  :Abrir Tela de Contas a Pagar;
+  :Voltar ao Dashboard;
+elseif (Receber) then (Receber)
+  :Abrir Tela de Contas a Receber;
+  :Voltar ao Dashboard;
+else (Upload)
+  :Abrir Tela de Upload;
+  :Voltar ao Dashboard;
+endif
+stop
+@enduml
+
+@startuml Fluxo_Notas
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Notas Fiscais
+start
+:Abrir Lista de Notas;
+:Visualizar Itens;
+if (Ação por Item?) then (Ver)
+  :Abrir Detalhes da Nota;
+  :Voltar à Lista;
+else (Excluir)
+  :Confirmar Exclusão;
+  if (Confirmado?) then (Sim)
+    :Remover Nota;
+  else (Não)
+    :Cancelar;
+  endif
+endif
+stop
+@enduml
+
+@startuml Fluxo_Classificar
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Classificar Notas (Kanban)
+start
+:Abrir Classificação;
+:Carregar Colunas;
+:Arrastar Cartão entre Colunas;
+if (Validação de Layout) then (OK)
+  :Atualizar Estado;
+  :Prosseguir / Salvar;
+else (Erro ref.measureLayout)
+  :Exibir Aviso;
+  :Recarregar Colunas;
+endif
+stop
+@enduml
+
+@startuml Fluxo_Calendario
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Calendário
+start
+:Abrir Calendário;
+:Selecionar Mês;
+:Visualizar Totais por Dia;
+:Ver Lista do Mês;
+:Revisar Lançamentos;
+stop
+@enduml
+
+@startuml Fluxo_Upload
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #5b8def
+skinparam RoundCorner 15
+title Fluxo – Upload de Nota
+start
+:Abrir Upload;
+:Escolher Arquivo;
+:Informar CNPJ opcional;
+:Processar Nota;
+if (Resultado?) then (Sucesso)
+  :Confirmar / Navegar;
+else (Falha)
+  :Exibir Mensagem / Tentar novamente;
+endif
+stop
+@enduml
