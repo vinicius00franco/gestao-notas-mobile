@@ -128,6 +128,7 @@ const drawerItems = [
   { path: '/dashboard', label: 'Home / Dashboard' },
   { path: '/notas', label: 'Notas Fiscais' },
   { path: '/job-status', label: 'Status do Job' },
+  { path: '/calendar', label: 'Calendário' },
 ];
 
 type Props = { title?: string; children: ReactNode };

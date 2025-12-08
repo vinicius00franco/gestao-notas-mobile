@@ -8,8 +8,10 @@ import { ContasAReceber } from './screens/ContasAReceber';
 import { Upload } from './screens/Upload';
 import { Notas } from './screens/Notas';
 import { JobStatus } from './screens/JobStatus';
-import theme from './theme';
+import { CalendarScreen } from './screens/Calendar';
+
 import { GlobalStyle } from './theme/GlobalStyle';
+import theme from './theme';
 
 function AppFrame() {
   const location = useLocation();
@@ -20,6 +22,7 @@ function AppFrame() {
     '/upload': 'Upload de Nota',
     '/notas': 'Notas Fiscais',
     '/job-status': 'Status do Job',
+    '/calendar': 'Calendário',
   };
 
   const title = titleMap[location.pathname] || 'Gestão de Notas';
@@ -33,6 +36,7 @@ function AppFrame() {
         <Route path="/upload" element={<Upload />} />
         <Route path="/notas" element={<Notas />} />
         <Route path="/job-status" element={<JobStatus />} />
+        <Route path="/calendar" element={<CalendarScreen />} />
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </MobileShell>
